@@ -1,0 +1,532 @@
+
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+{% block title %} Helping Buyers Navigate {{ city.name }} City’s Off-Plan Real Estate Market {% endblock %}
+{% block meta_description %}Explore {{ city.name }} city off-plan properties with BuyOffPlanUAE.com — expert guidance, verified listings, and smart investment opportunities.{% endblock %}
+{% block twitter_card %}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@BuyOffPlanUAE">
+<meta name="twitter:title" content="Properties for sale in {{ city.name }} | BuyOffPlanUAE">
+<meta name="twitter:description" content="{{ meta_description }}">
+<meta name="twitter:image" content="{% block twitter_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'img/logo.png' %}{% endblock %}">
+<meta name="twitter:image:alt" content="{{ city.name }} Off-Plan Properties">
+{% endblock %}
+
+{% block open_graph %}
+<meta property="og:type" content="website">
+<meta property="og:url" content="{{ request.build_absolute_uri }}">
+<meta property="og:title" content="Properties for sale in {{ city.name }}">
+<meta property="og:description" content="{{ meta_description }}">
+<meta property="og:image" content="{% block og_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'img/logo.png' %}{% endblock %}">
+<meta property="og:site_name" content="BuyOffPlanUAE">
+{% endblock %}
+{% block content %}
+<style>
+    .nav-menu a{
+        color: #fff;
+    }
+    .modern-header.scrolled .nav-menu a{
+        color: #000;
+    }
+    .community-hero {
+        background: linear-gradient(135deg, #1e3a5f 0%, #2c5282 100%);
+        padding: 8rem 2rem 4rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .community-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('{% static "img/hero.avif" %}') center/cover;
+        opacity: 0.1;
+    }
+
+    .community-hero-content {
+        position: relative;
+        max-width: 1400px;
+        margin: 0 auto;
+        z-index: 10;
+    }
+
+    .breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 0.95rem;
+    }
+
+    .breadcrumb a {
+        color: rgba(255, 255, 255, 0.7);
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .breadcrumb a:hover {
+        color: white;
+    }
+
+    .breadcrumb i {
+        font-size: 0.75rem;
+    }
+
+    .community-hero h1 {
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-weight: 700;
+        color: white;
+        margin-bottom: 1rem;
+    }
+
+    .community-hero-subtitle {
+        font-size: 1.25rem;
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 2rem;
+    }
+
+    .community-stats-row {
+        display: flex;
+        gap: 2rem;
+        flex-wrap: wrap;
+    }
+
+    .stat-box {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 1.5rem 2rem;
+        border-radius: 16px;
+        flex: 1;
+        min-width: 200px;
+    }
+
+    .stat-box-label {
+        font-size: 0.875rem;
+        color: rgba(255, 255, 255, 0.7);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-box-value {
+        font-size: 2rem;
+        font-weight: 700;
+        color: white;
+    }
+
+    .properties-section {
+        background: #f8fafc;
+        padding: 4rem 2rem;
+    }
+
+    .properties-container {
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .section-header h2 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #1e3a5f;
+    }
+
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        background: white;
+        color: #475569;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 600;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+    }
+
+    .back-link:hover {
+        background: #1e3a5f;
+        color: white;
+        transform: translateX(-4px);
+    }
+
+    .filters-wrapper {
+        background: white;
+        padding: 2rem;
+        border-radius: 16px;
+        margin-bottom: 2rem;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+
+    .filter-label-row {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        color: #1e3a5f;
+        font-weight: 600;
+    }
+
+    .filters-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .filters-grid select {
+        padding: 0.75rem 1rem;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        font-size: 0.95rem;
+        color: #475569;
+        background: white;
+        cursor: pointer;
+        transition: border-color 0.3s ease;
+    }
+
+    .filters-grid select:focus {
+        outline: none;
+        border-color: #c7b04c;
+    }
+
+    .filter-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .results-info {
+        color: #64748b;
+        font-size: 0.95rem;
+    }
+
+    .results-info strong {
+        color: #1e3a5f;
+        font-weight: 700;
+    }
+
+    .clear-btn {
+        padding: 0.625rem 1.25rem;
+        background: #f1f5f9;
+        color: #475569;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .clear-btn:hover {
+        background: #e2e8f0;
+    }
+
+    .property-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 2rem;
+        margin-bottom: 3rem;
+    }
+
+    .property-card {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .property-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+    }
+
+    .pagination-wrapper {
+        display: flex;
+        justify-content: center;
+        margin-top: 3rem;
+    }
+
+    .pagination {
+        display: flex;
+        gap: 0.5rem;
+        list-style: none;
+        padding: 0;
+    }
+
+    .pagination a, .pagination span {
+        padding: 0.75rem 1.25rem;
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        color: #475569;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .pagination a:hover {
+        background: #c7b04c;
+        color: white;
+        border-color: #c7b04c;
+    }
+
+    .pagination .current {
+        background: #c7b04c;
+        color: white;
+        border-color: #c7b04c;
+    }
+
+    @media (max-width: 767px) {
+        .community-hero {
+            padding: 6rem 1rem 3rem;
+        }
+
+        .community-hero h1 {
+            font-size: 2rem;
+        }
+
+        .community-stats-row {
+            gap: 1rem;
+        }
+
+        .stat-box {
+            min-width: 100%;
+        }
+
+        .properties-section {
+            padding: 3rem 1rem;
+        }
+
+        .section-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .filters-wrapper {
+            padding: 1.5rem;
+        }
+
+        .filters-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .property-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<!-- City Hero -->
+<section class="community-hero">
+    <div class="community-hero-content">
+        <div class="breadcrumb">
+            <a href="{% url 'main:home' %}" title="back to home">Home</a>
+            <i class="fas fa-chevron-right"></i>
+            <a href="{% url 'main:home' %}#cities" title="back to cities">Cities</a>
+            <i class="fas fa-chevron-right"></i>
+            <span>{{ city.name }}</span>
+        </div>
+
+        <h1>{{ city.name }}</h1>
+        <p class="community-hero-subtitle">
+            Discover {{ total_count }} Premium Properties in {{ city.name }}
+        </p>
+
+        <div class="community-stats-row">
+            <div class="stat-box">
+                <div class="stat-box-label">Total Properties</div>
+                <div class="stat-box-value">{{ total_count }}</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-box-label">Average Price</div>
+                <div class="stat-box-value">{{ avg_price|floatformat:0|intcomma }} AED</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-box-label">City</div>
+                <div class="stat-box-value">{{ city.name }}</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Properties Section -->
+<section class="properties-section">
+    <div class="properties-container">
+        <div class="section-header">
+            <h2>Available Properties</h2>
+            <a href="{% url 'main:home' %}#cities" title="back to cities page" class="back-link">
+                <i class="fas fa-arrow-left"></i>
+                Back to Cities
+            </a>
+        </div>
+
+        <!-- Filters -->
+        <div class="filters-wrapper">
+            <form method="get" action="">
+                <div class="filter-label-row">
+                    <i class="fas fa-sliders-h"></i>
+                    <span>Filter Properties</span>
+                </div>
+
+                <div class="filters-grid">
+                    <select name="developer" onchange="this.form.submit()">
+                        <option value="">All Developers</option>
+                        {% for dev in developers %}
+                        <option value="{{ dev.id }}" {% if request.GET.developer == dev.id|stringformat:"s" %}selected{% endif %}>
+                            {{ dev.name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+
+                    <select name="type" onchange="this.form.submit()">
+                        <option value="">All Types</option>
+                        {% for typ in types %}
+                        <option value="{{ typ.id }}" {% if request.GET.type == typ.id|stringformat:"s" %}selected{% endif %}>
+                            {{ typ.name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+
+                    <select name="price" onchange="this.form.submit()">
+                        <option value="">All Prices</option>
+                        <option value="under_500k" {% if selected_price == 'under_500k' %}selected{% endif %}>Under 500K AED</option>
+                        <option value="500k_1m" {% if selected_price == '500k_1m' %}selected{% endif %}>500K - 1M AED</option>
+                        <option value="1m_2m" {% if selected_price == '1m_2m' %}selected{% endif %}>1M - 2M AED</option>
+                        <option value="2m_3m" {% if selected_price == '2m_3m' %}selected{% endif %}>2M - 3M AED</option>
+                        <option value="3m_4m" {% if selected_price == '3m_4m' %}selected{% endif %}>3M - 4M AED</option>
+                        <option value="4m_5m" {% if selected_price == '4m_5m' %}selected{% endif %}>4M - 5M AED</option>
+                        <option value="above_5m" {% if selected_price == 'above_5m' %}selected{% endif %}>Above 5M AED</option>
+                    </select>
+
+                    <select name="status" onchange="this.form.submit()">
+                        <option value="">All Status</option>
+                        {% for sts in status %}
+                        <option value="{{ sts.id }}" {% if request.GET.status == sts.id|stringformat:"s" %}selected{% endif %}>
+                            {{ sts.name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="filter-actions">
+                    <div class="results-info">
+                        <i class="fas fa-home" style="color: #c7b04c;"></i>
+                        <strong>{{ total_count }}</strong> properties found in {{ city.name }}
+                    </div>
+                    <a href="{% url 'main:city_properties' slug=city.slug %}" title="clear" class="clear-btn">
+                        Clear Filters
+                    </a>
+                </div>
+            </form>
+        </div>
+
+        <!-- Property Grid -->
+        <div class="property-grid">
+            {% for prop in properties %}
+            <div class="property-card">
+                <div style="position:relative; overflow:hidden;">
+                    <img src="{{ prop.cover }}" alt="{{ prop.title }}" title="{{ prop.title }}" style="width:100%; height:240px; object-fit:cover; transition:transform 0.3s ease;">
+                    <div style="position:absolute; top:12px; left:12px; background:#1e3a5f; color:white; padding:0.4rem 0.8rem; border-radius:8px; font-size:0.75rem; font-weight:600;">
+                        {{ prop.property_status.name }}
+                    </div>
+                    <div style="position:absolute; top:12px; right:12px; background:#c7b04c; color:white; padding:0.4rem 0.9rem; border-radius:8px; font-size:0.75rem; font-weight:700;">
+                        {{ prop.property_type.name|upper }}
+                    </div>
+                </div>
+                <div style="padding:1.5rem;">
+                    <div style="display:flex; align-items:center; gap:0.4rem; margin-bottom:0.8rem; color:#64748b; font-size:0.85rem;">
+                        <i class="fas fa-map-marker-alt" style="color:#c7b04c;"></i>
+                        <span>{% if prop.district %}{{ prop.district.name }}, {% endif %}{{ prop.city.name }}</span>
+                    </div>
+                    <h3 style="font-size:1.3rem; font-weight:700; color:#1e293b; margin-bottom:0.5rem;">{{ prop.title }}</h3>
+                    
+                    <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:1rem;">
+                        <img src="{{ prop.developer.logo }}" alt="{{ prop.developer.name }}" title="{{ prop.developer.name }}" style="width:60px; height:60px; border-radius:4px; object-fit:contain;">
+                        <div>
+                            <div style="font-size:0.7rem; color:#94a3b8; text-transform:uppercase;">Developer</div>
+                            <div style="font-size:0.9rem; color:#475569; font-weight:600;">{{ prop.developer.name }}</div>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom:1.2rem;">
+                        <div style="font-size:0.75rem; color:#94a3b8; text-transform:uppercase;">Starting Price</div>
+                        <div style="font-size:1.6rem; font-weight:700; color:#c7b04c;">AED {{ prop.low_price|intcomma }}</div>
+                    </div>
+
+                    <a href="{% url 'main:properties_detail' slug=prop.slug %}" style="display:block; text-align:center; background:#1e3a5f; color:white; padding:0.85rem; border-radius:10px; font-weight:600; text-decoration:none; transition:background 0.3s ease;">
+                        View Details <i class="fas fa-eye" style="margin-left:0.4rem;"></i>
+                    </a>
+                </div>
+            </div>
+            {% empty %}
+            <div style="grid-column: 1/-1; text-align:center; padding:4rem 2rem; color:#64748b;">
+                <i class="fas fa-home" style="font-size:4rem; color:#cbd5e1; margin-bottom:1rem;"></i>
+                <h3 style="font-size:1.5rem; color:#475569; margin-bottom:0.5rem;">No Properties Found</h3>
+                <p>Try adjusting your filters to see more results.</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if properties.has_other_pages %}
+<div class="pagination-wrapper">
+    <ul class="pagination">
+
+        {% if properties.has_previous %}
+        <li>
+            <a href="?page=1{% if filter_query %}&{{ filter_query }}{% endif %}">
+                First
+            </a>
+        </li>
+        <li>
+            <a href="?page={{ properties.previous_page_number }}{% if filter_query %}&{{ filter_query }}{% endif %}">
+                Previous
+            </a>
+        </li>
+        {% endif %}
+
+        <li class="active">
+            <span>Page {{ properties.number }} of {{ properties.paginator.num_pages }}</span>
+        </li>
+
+        {% if properties.has_next %}
+        <li>
+            <a href="?page={{ properties.next_page_number }}{% if filter_query %}&{{ filter_query }}{% endif %}">
+                Next
+            </a>
+        </li>
+        <li>
+            <a href="?page={{ properties.paginator.num_pages }}{% if filter_query %}&{{ filter_query }}{% endif %}">
+                Last
+            </a>
+        </li>
+        {% endif %}
+
+    </ul>
+</div>
+{% endif %}
+
+    </div>
+</section>
+
+{% endblock %}

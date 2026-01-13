@@ -1,0 +1,416 @@
+<!-- templates/components/footer.html -->
+{% load static %}
+<footer class="modern-footer">
+    <div class="footer-container">
+        <!-- Brand Section - Left -->
+        <div class="footer-brand">
+             <div class="footer-logo">
+                    <img src="{% static 'img/logo.png' %}" alt="offplanuae" title="BuyOffPlanUAE | Dubai Off-Plan Property Experts">
+
+                    <span class="brand-name">
+                        <img
+                            src="{% static 'img/logotext.png' %}"
+                            alt="BUYOFFPLANUAE.COM"
+                            class="footer-brand-img"
+                            title="BuyOffPlanUAE | Dubai Off-Plan Property Experts"
+                        >
+                    </span>
+                </div>
+
+            <p class="footer-tagline">
+                Your trusted AI-powered platform for discovering premium off-plan properties across the UAE.
+            </p>
+            
+            <!-- Social Icons -->
+            <div class="social-links">
+                <a href="https://www.facebook.com/profile.php?id=61584448649138" title="facebook" class="social-icon" aria-label="Facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="https://www.tiktok.com/@offplanuae.ai" title="tiktok" class="social-icon" aria-label="TikTok">
+                     <i class="fab fa-tiktok"></i>
+                </a>
+                <a href="https://www.instagram.com/offplanuae.ai?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" title="instagram" class="social-icon" aria-label="Instagram">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="http://linkedin.com/company/offplan-uae-ai" title="linkedin" class="social-icon" aria-label="LinkedIn">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Quick Links - Center/Right -->
+        <div class="footer-column footer-quick-links">
+            <h3 class="footer-heading">QUICK LINKS</h3>
+            <div class="footer-links-block">
+                <a href="{% url 'main:city_properties' slug='abu-dhabi' %}" title="abu-dhabi" class="footer-link">Property for Sale in Abu Dhabi</a>
+                <a href="{% url 'main:city_properties' slug='ajman' %}" title="ajman" class="footer-link">Property for Sale in Ajman</a>
+                <a href="{% url 'main:city_properties' slug='dubai' %}" title="dubai" class="footer-link">Property for Sale in Dubai</a>
+                <a href="{% url 'main:city_properties' slug='ras-al-khaimah' %}" title="ras-al-khaimah" class="footer-link">Property for Sale in Ras Al Khaimah</a>
+                <a href="{% url 'main:city_properties' slug='sharjah' %}" title="sharjah" class="footer-link">Property for Sale in Sharjah</a>
+                <a href="{% url 'main:city_properties' slug='umm-al-quwain' %}" title="umm-al-quwain" class="footer-link">Property for Sale in Umm Al Quwain</a>
+            </div>
+        </div>
+        
+        <!-- Properties - Right -->
+        <div class="footer-column footer-properties">
+            <h3 class="footer-heading">PROPERTIES</h3>
+            <div class="footer-links-block">
+                <a href="{% url 'main:properties' %}?type=Villa" title="villa" class="footer-link">Villas</a>
+                <a href="{% url 'main:properties' %}?type=Apartment" title="Apartment" class="footer-link">Apartments</a>
+                <a href="{% url 'main:properties' %}?type=Townhouse" title="Townhouse" class="footer-link">Townhouses</a>
+                <a href="{% url 'main:properties' %}?type=Penthouse" title="Penthouse" class="footer-link">Penthouses</a>
+                <a href="{% url 'main:properties' %}?type=Duplex" title="Duplex" class="footer-link">Duplex</a>
+            </div>
+        </div>
+        <div class="footer-column footer-properties">
+            <h3 class="footer-heading">TOP DEVELOPERS</h3>
+            <div class="footer-links-block">
+                {% for developer in featured_developers %}
+                <a href="{% url 'main:developer_detail' slug=developer.slug %}" title="developer" class="footer-link">{{ developer.name }}</a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer Bottom -->
+    <div class="footer-bottom">
+        <div class="footer-bottom-container">
+            <p class="copyright">© 2025 BUYOFFPLANUAE.COM All rights reserved.</p>
+            <div class="footer-legal">
+                <a href="{% url 'main:privacy_policy' %}" title="Privacy Policy" class="legal-link">Privacy Policy</a>
+                <a href="{% url 'main:terms_and_conditions' %}" title="terms of Service" class="legal-link">Terms of Service</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Science+Gothic:wght@100..900&display=swap');
+
+/* =========================
+   FOOTER BASE
+========================= */
+.modern-footer {
+    background: #fff;
+    padding: 4rem 0 0;
+    margin-top: 5rem;
+    box-shadow: 0 -4px 12px rgba(157, 154, 154, 0.1);
+    position: relative;
+    z-index: 1;
+}
+
+.footer-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem 3rem;
+    display: grid;
+    /* grid-template-columns: repeat(4,1fr); */
+    grid-template-columns: 1.8fr 2fr 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+}
+
+/* =========================
+   BRAND SECTION
+========================= */
+.footer-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.footer-logo img {
+    
+    height: 60px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+/* 🔒 Animation strictly isolated */
+.brand-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1e3a5f;
+    font-family: 'Science Gothic', sans-serif;
+    letter-spacing: -0.4px;
+    position: relative;
+    display: inline-block;
+    white-space: nowrap;
+    line-height: 1.2;
+
+    /* 🔑 IMPORTANT FIX */
+    overflow: hidden;
+    isolation: isolate;
+}
+/* Footer Brand Text Image */
+.footer-brand-img {
+    height: 30px;
+    width: auto;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* Tablet */
+@media (max-width: 768px) {
+    .footer-brand-img {
+        height: 20px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+    .footer-brand-img {
+        height: 18px;
+    }
+}
+
+/* Gold sweep animation */
+.brand-name::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(245, 158, 11, 0.15) 25%,
+        rgba(245, 158, 11, 0.45) 50%,
+        rgba(245, 158, 11, 0.15) 75%,
+        transparent 100%
+    );
+    transform: translateX(-120%);
+    animation: goldLightSweep 3s ease-in-out infinite;
+    z-index: 0;
+    pointer-events: none;
+}
+
+@keyframes goldLightSweep {
+    0%   { transform: translateX(-120%); }
+    50%  { transform: translateX(120%); }
+    100% { transform: translateX(-120%); }
+}
+
+.brand-highlight {
+    background: linear-gradient(135deg, #d8c469 0%, #c7b04c 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.footer-tagline {
+    color: #64748b;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    max-width: 350px;
+}
+
+/* =========================
+   SOCIAL
+========================= */
+.social-links {
+    display: flex;
+    gap: 1rem;
+}
+
+.social-icon {
+    width: 45px;
+    height: 45px;
+    background: white;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #64748b;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.social-icon:hover {
+    background: #c7b04c;
+    color: white;
+    transform: translateY(-3px);
+}
+
+/* =========================
+   FOOTER COLUMNS
+========================= */
+.footer-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.footer-heading {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1e3a5f;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: relative;
+    z-index: 2; /* 🔒 ensures no animation overlap */
+}
+
+.footer-links-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.footer-link {
+    color: #64748b;
+    text-decoration: none;
+    font-size: 0.95rem;
+    position: relative;
+    padding: 0.25rem 0;
+}
+
+.footer-link:hover,
+.footer-link.active {
+    color: #c7b04c;
+}
+
+/* Quick Links arrow */
+.footer-quick-links .footer-link::before {
+    content: '→';
+    opacity: 0;
+    margin-right: 0.5rem;
+    transition: all 0.3s ease;
+    color: #c7b04c;
+    transform: translateX(-10px);
+}
+
+.footer-quick-links .footer-link:hover::before {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Properties spacing match */
+.footer-properties .footer-link {
+    padding-left: 1.2rem;
+}
+
+.footer-properties .footer-link::after {
+    content: '→';
+    opacity: 0;
+    margin-left: 0.5rem;
+    transition: all 0.3s ease;
+    color: #c7b04c;
+}
+
+.footer-properties .footer-link:hover::after {
+    opacity: 1;
+}
+
+/* =========================
+   FOOTER BOTTOM
+========================= */
+.footer-bottom {
+    border-top: 1px solid #e2e8f0;
+}
+
+.footer-bottom-container {
+    max-width: 1400px;
+    margin: auto;
+    padding: 1.5rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.copyright,
+.legal-link {
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+/* =========================
+   MOBILE RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+    .footer-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding: 0 1.5rem 2rem;
+    }
+
+    .footer-brand {
+        align-items: center;
+        text-align: center;
+    }
+
+    .footer-logo {
+        flex-direction: column;
+    }
+
+    .brand-name {
+        font-size: 1.1rem;
+    }
+
+    /* 🔥 Disable animation on mobile */
+   .brand-name::before {
+        animation-duration: 4.5s;
+        background: linear-gradient(
+            90deg,
+            transparent 0%,
+            rgba(245, 158, 11, 0.12) 40%,
+            rgba(245, 158, 11, 0.35) 50%,
+            rgba(245, 158, 11, 0.12) 60%,
+            transparent 100%
+        );
+    }
+
+    .footer-column {
+        align-items: center;
+        text-align: center;
+    }
+
+    .footer-properties .footer-link {
+        padding-left: 0;
+    }
+
+    .footer-bottom-container {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .brand-name {
+        font-size: 1rem;
+    }
+
+    .footer-link {
+        font-size: 0.85rem;
+    }
+}
+
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const currentPath = window.location.pathname.trim();  
+    const footerLinks = document.querySelectorAll('.footer-link');
+
+    footerLinks.forEach(link => {
+        const linkPath = link.getAttribute('href').trim();
+
+        link.classList.remove('active');
+
+        // EXACT MATCH
+        if (linkPath === currentPath) {
+            link.classList.add('active');
+        }
+
+        // Special case: Home page "/"
+        if (currentPath === "/" && (linkPath === "/" || linkPath.includes("home"))) {
+            link.classList.add('active');
+        }
+    });
+});
+</script>

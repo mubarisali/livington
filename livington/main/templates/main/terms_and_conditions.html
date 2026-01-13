@@ -1,0 +1,851 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Terms and Conditions - BuyOffPlanUAE{% endblock %}
+{% block meta_description %}Read the complete Terms and Conditions for using BuyOffPlanUAE services. Learn about our policies, user agreements, liability limitations, and your rights when browsing Dubai off-plan properties on our platform.{% endblock %}
+
+{% block content %}
+
+<style>
+    .modern-header{
+        background: #fff;
+    }
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .terms-hero {
+        background: linear-gradient(135deg, #1e3a5f 0%, #0f1f3a 100%);
+        padding: 140px 20px 60px;
+        color: white;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .terms-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg width="60" height="60" xmlns="http://www.w3.org/2000/svg"><path d="M30 0L60 30L30 60L0 30Z" fill="rgba(199,176,76,0.08)"/></svg>');
+        opacity: 0.5;
+    }
+
+    .terms-hero::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -10%;
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(circle, rgba(199,176,76,0.15) 0%, transparent 70%);
+        border-radius: 50%;
+    }
+
+    .terms-hero .container {
+        max-width: 1200px;
+        margin: auto;
+        position: relative;
+        z-index: 1;
+    }
+
+    .terms-hero h1 {
+        font-size: 3.5rem;
+        font-weight: 800;
+        margin-bottom: 15px;
+        text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        background: linear-gradient(135deg, #ffffff 0%, #c7b04c 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .terms-hero .subtitle {
+        font-size: 1.2rem;
+        opacity: 0.95;
+        margin-bottom: 10px;
+        color: #c7b04c;
+    }
+
+    .terms-hero .updated {
+        display: inline-block;
+        background: rgba(199,176,76,0.2);
+        padding: 8px 20px;
+        border-radius: 50px;
+        font-size: 0.9rem;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(199,176,76,0.3);
+    }
+
+    .terms-content {
+        background: #f8fafc;
+        padding: 60px 20px;
+    }
+
+    .terms-content .container {
+        max-width: 1200px;
+        margin: auto;
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        gap: 40px;
+    }
+
+    .sidebar {
+        position: sticky;
+        top: 20px;
+        height: fit-content;
+    }
+
+    .sidebar-nav {
+        background: white;
+        border-radius: 16px;
+        padding: 25px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        border-top: 3px solid #c7b04c;
+    }
+
+    .sidebar-nav h3 {
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #1e3a5f;
+        margin-bottom: 15px;
+        font-weight: 700;
+    }
+
+    .sidebar-nav ul {
+        list-style: none;
+    }
+
+    .sidebar-nav ul li {
+        margin-bottom: 10px;
+    }
+
+    .sidebar-nav ul li a {
+        text-decoration: none;
+        color: #64748b;
+        font-size: 0.95rem;
+        display: block;
+        padding: 8px 12px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .sidebar-nav ul li a:hover {
+        background: #f1f5f9;
+        color: #1e3a5f;
+        transform: translateX(5px);
+        border-left: 3px solid #c7b04c;
+    }
+
+    .main-content {
+        background: white;
+        border-radius: 20px;
+        padding: 50px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    }
+
+    .section {
+        margin-bottom: 50px;
+        scroll-margin-top: 100px;
+    }
+
+    .section h2 {
+        font-size: 2rem;
+        color: #1e3a5f;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        font-weight: 700;
+    }
+
+    .section h2::before {
+        content: '';
+        width: 6px;
+        height: 35px;
+        background: linear-gradient(135deg, #c7b04c, #d4c165);
+        border-radius: 3px;
+    }
+
+    .section h3 {
+        font-size: 1.4rem;
+        color: #1e3a5f;
+        margin-top: 30px;
+        margin-bottom: 15px;
+        font-weight: 600;
+    }
+
+    .section p {
+        line-height: 1.9;
+        color: #475569;
+        font-size: 1.05rem;
+        margin-bottom: 20px;
+    }
+
+    .section ul {
+        margin-left: 0;
+        list-style: none;
+        margin-bottom: 25px;
+    }
+
+    .section ul li {
+        position: relative;
+        padding-left: 30px;
+        margin-bottom: 15px;
+        line-height: 1.8;
+        color: #475569;
+    }
+
+    .section ul li::before {
+        content: '✓';
+        position: absolute;
+        left: 0;
+        color: #c7b04c;
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+
+    .section a {
+        color: #1e3a5f;
+        text-decoration: none;
+        border-bottom: 2px solid #c7b04c;
+        transition: all 0.3s ease;
+    }
+
+    .section a:hover {
+        color: #c7b04c;
+    }
+
+    .highlight-box {
+        background: linear-gradient(135deg, #faf9f5 0%, #fefdfb 100%);
+        border-left: 4px solid #c7b04c;
+        padding: 25px;
+        border-radius: 12px;
+        margin: 30px 0;
+    }
+
+    .highlight-box h3 {
+        margin-top: 0;
+        color: #1e3a5f;
+    }
+
+    .contact-card {
+        background: linear-gradient(135deg, #1e3a5f 0%, #0f1f3a 100%);
+        color: white;
+        padding: 40px;
+        border-radius: 16px;
+        text-align: center;
+        margin-top: 50px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .contact-card::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(199,176,76,0.1) 0%, transparent 70%);
+        animation: pulse 4s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); opacity: 0.5; }
+        50% { transform: scale(1.1); opacity: 0.3; }
+    }
+
+    .contact-card h3 {
+        font-size: 1.8rem;
+        margin-bottom: 15px;
+        position: relative;
+        z-index: 1;
+        color: #ffffff;
+    }
+
+    .contact-card p {
+        color: rgba(255,255,255,0.9);
+        margin-bottom: 25px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .contact-card a {
+        display: inline-block;
+        background: #c7b04c;
+        color: #1e3a5f;
+        padding: 15px 40px;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(199,176,76,0.3);
+        position: relative;
+        z-index: 1;
+        border: none;
+    }
+
+    .contact-card a:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(199,176,76,0.5);
+        background: #d4c165;
+    }
+
+    /* Tablet Styles (1024px and below) */
+    @media (max-width: 1024px) {
+        .terms-content .container {
+            grid-template-columns: 240px 1fr;
+            gap: 30px;
+        }
+
+        .sidebar-nav {
+            padding: 20px;
+        }
+
+        .main-content {
+            padding: 40px;
+        }
+
+        .section h2 {
+            font-size: 1.8rem;
+        }
+
+        .section h3 {
+            font-size: 1.3rem;
+        }
+    }
+
+    /* Tablet and smaller (968px and below) */
+    @media (max-width: 968px) {
+        .terms-hero {
+            padding: 120px 20px 50px;
+        }
+
+        .terms-hero h1 {
+            font-size: 2.8rem;
+        }
+
+        .terms-hero .subtitle {
+            font-size: 1.1rem;
+        }
+
+        .terms-content .container {
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        .sidebar {
+            position: static;
+        }
+
+        .sidebar-nav {
+            max-width: 100%;
+        }
+
+        .sidebar-nav ul {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .main-content {
+            padding: 35px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section h2 {
+            font-size: 1.7rem;
+        }
+
+        .section h2::before {
+            height: 30px;
+        }
+
+        .contact-card {
+            padding: 35px;
+        }
+    }
+
+    /* Mobile Landscape and smaller (768px and below) */
+    @media (max-width: 768px) {
+        .terms-hero {
+            padding: 100px 15px 40px;
+        }
+
+        .terms-hero h1 {
+            font-size: 2.3rem;
+        }
+
+        .terms-hero .subtitle {
+            font-size: 1rem;
+        }
+
+        .terms-hero .updated {
+            font-size: 0.85rem;
+            padding: 6px 16px;
+        }
+
+        .terms-content {
+            padding: 40px 15px;
+        }
+
+        .sidebar-nav ul {
+            grid-template-columns: 1fr;
+        }
+
+        .main-content {
+            padding: 30px;
+            border-radius: 16px;
+        }
+
+        .section h2 {
+            font-size: 1.6rem;
+            gap: 12px;
+        }
+
+        .section h3 {
+            font-size: 1.2rem;
+        }
+
+        .section p {
+            font-size: 1rem;
+        }
+
+        .highlight-box {
+            padding: 20px;
+        }
+
+        .contact-card {
+            padding: 30px;
+        }
+
+        .contact-card h3 {
+            font-size: 1.5rem;
+        }
+
+        .contact-card a {
+            padding: 12px 30px;
+            font-size: 0.95rem;
+        }
+    }
+
+    /* Mobile Portrait (640px and below) */
+    @media (max-width: 640px) {
+        .terms-hero {
+            padding: 80px 15px 35px;
+        }
+
+        .terms-hero h1 {
+            font-size: 2rem;
+            line-height: 1.2;
+        }
+
+        .terms-hero .subtitle {
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+
+        .terms-hero .updated {
+            font-size: 0.8rem;
+            padding: 6px 14px;
+        }
+
+        .terms-content {
+            padding: 30px 15px;
+        }
+
+        .sidebar-nav {
+            padding: 18px;
+        }
+
+        .sidebar-nav h3 {
+            font-size: 0.8rem;
+        }
+
+        .sidebar-nav ul li a {
+            font-size: 0.9rem;
+            padding: 7px 10px;
+        }
+
+        .main-content {
+            padding: 25px 20px;
+            border-radius: 12px;
+        }
+
+        .section {
+            margin-bottom: 35px;
+            scroll-margin-top: 80px;
+        }
+
+        .section h2 {
+            font-size: 1.4rem;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .section h2::before {
+            width: 5px;
+            height: 25px;
+        }
+
+        .section h3 {
+            font-size: 1.1rem;
+            margin-top: 25px;
+        }
+
+        .section p {
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .section ul li {
+            padding-left: 25px;
+            font-size: 0.95rem;
+        }
+
+        .section ul li::before {
+            font-size: 1rem;
+        }
+
+        .highlight-box {
+            padding: 18px;
+            margin: 20px 0;
+        }
+
+        .contact-card {
+            padding: 25px 20px;
+            margin-top: 35px;
+        }
+
+        .contact-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+        }
+
+        .contact-card p {
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+        }
+
+        .contact-card a {
+            padding: 12px 28px;
+            font-size: 0.9rem;
+        }
+    }
+
+    /* Small Mobile (480px and below) */
+    @media (max-width: 480px) {
+        .terms-hero {
+            padding: 70px 12px 30px;
+        }
+
+        .terms-hero h1 {
+            font-size: 1.7rem;
+        }
+
+        .terms-hero .subtitle {
+            font-size: 0.9rem;
+        }
+
+        .terms-hero .updated {
+            font-size: 0.75rem;
+            padding: 5px 12px;
+        }
+
+        .terms-content {
+            padding: 25px 12px;
+        }
+
+        .sidebar-nav {
+            padding: 15px;
+        }
+
+        .main-content {
+            padding: 20px 15px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section h2 {
+            font-size: 1.25rem;
+        }
+
+        .section h3 {
+            font-size: 1rem;
+        }
+
+        .section p {
+            font-size: 0.9rem;
+        }
+
+        .section ul li {
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+        }
+
+        .highlight-box {
+            padding: 15px;
+        }
+
+        .contact-card {
+            padding: 20px 15px;
+        }
+
+        .contact-card h3 {
+            font-size: 1.2rem;
+        }
+
+        .contact-card p {
+            font-size: 0.9rem;
+        }
+
+        .contact-card a {
+            padding: 10px 24px;
+            font-size: 0.85rem;
+        }
+    }
+
+    /* Extra Small Mobile (375px and below) */
+    @media (max-width: 375px) {
+        .terms-hero h1 {
+            font-size: 1.5rem;
+        }
+
+        .terms-hero .subtitle {
+            font-size: 0.85rem;
+        }
+
+        .section h2 {
+            font-size: 1.15rem;
+        }
+
+        .section h3 {
+            font-size: 0.95rem;
+        }
+
+        .section p,
+        .section ul li {
+            font-size: 0.85rem;
+        }
+
+        .contact-card h3 {
+            font-size: 1.1rem;
+        }
+
+        .contact-card a {
+            padding: 10px 20px;
+        }
+    }
+</style>
+
+<section class="terms-hero">
+    <div class="container">
+        <h1>Terms and Conditions</h1>
+        <p class="subtitle">Please read carefully before using our service</p>
+        <span class="updated">Last updated: January 08, 2026</span>
+    </div>
+</section>
+
+<section class="terms-content">
+    <div class="container">
+        <aside class="sidebar">
+            <nav class="sidebar-nav">
+                <h3>Quick Navigation</h3>
+                <ul>
+                    <li><a href="#introduction" title="introduction section">Introduction</a></li>
+                    <li><a href="#definitions" title="definitions section">Definitions</a></li>
+                    <li><a href="#acknowledgment" title="acknowledgment section">Acknowledgment</a></li>
+                    <li><a href="#links" title="links section">Links to Other Websites</a></li>
+                    <li><a href="#termination" title="termination section">Termination</a></li>
+                    <li><a href="#liability" title="liability section">Limitation of Liability</a></li>
+                    <li><a href="#disclaimer" title="disclaimer section">Disclaimer</a></li>
+                    <li><a href="#governing-law" title="governing-law section">Governing Law</a></li>
+                    <li><a href="#disputes" title="disputes section">Disputes Resolution</a></li>
+                    <li><a href="#severability" title="severability section">Severability & Waiver</a></li>
+                    <li><a href="#changes" title="changes section">Changes to Terms</a></li>
+                    <li><a href="#contact" title="contact section">Contact Us</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <div class="main-content">
+            <div id="introduction" class="section">
+                <h2>Introduction</h2>
+                <p>
+                    Please read these terms and conditions carefully before using Our Service.
+                </p>
+            </div>
+
+            <div id="definitions" class="section">
+                <h2>Interpretation and Definitions</h2>
+                
+                <h3>Interpretation</h3>
+                <p>
+                    The words whose initial letters are capitalized have meanings defined under the following conditions. The following definitions shall have the same meaning regardless of whether they appear in singular or in plural.
+                </p>
+
+                <div class="highlight-box">
+                    <h3>Definitions</h3>
+                    <p>For the purposes of these Terms and Conditions:</p>
+                    <ul>
+                        <li><strong>Affiliate</strong> means an entity that controls, is controlled by, or is under common control with a party, where "control" means ownership of 50% or more of the shares, equity interest or other securities entitled to vote for election of directors or other managing authority.</li>
+                        <li><strong>Country</strong> refers to: United Arab Emirates</li>
+                        <li><strong>Company</strong> (referred to as either "the Company", "We", "Us" or "Our" in this Agreement) refers to buyoffplanuae, Dubai.</li>
+                        <li><strong>Device</strong> means any device that can access the Service such as a computer, a cell phone or a digital tablet.</li>
+                        <li><strong>Service</strong> refers to the Website.</li>
+                        <li><strong>Terms and Conditions</strong> (also referred as "Terms") mean these Terms and Conditions that form the entire agreement between You and the Company regarding the use of the Service.</li>
+                        <li><strong>Third-party Social Media Service</strong> means any services or content (including data, information, products or services) provided by a third-party that may be displayed, included or made available by the Service.</li>
+                        <li><strong>Website</strong> refers to buyoffplanuae, accessible from <a href="https://www.buyoffplanuae.com/" target="_blank">https://www.buyoffplanuae.com/</a></li>
+                        <li><strong>You</strong> means the individual accessing or using the Service, or the company, or other legal entity on behalf of which such individual is accessing or using the Service, as applicable.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div id="acknowledgment" class="section">
+                <h2>Acknowledgment</h2>
+                <p>
+                    These are the Terms and Conditions governing the use of this Service and the agreement that operates between You and the Company. These Terms and Conditions set out the rights and obligations of all users regarding the use of the Service.
+                </p>
+                <p>
+                    Your access to and use of the Service is conditioned on Your acceptance of and compliance with these Terms and Conditions. These Terms and Conditions apply to all visitors, users and others who access or use the Service.
+                </p>
+                <p>
+                    By accessing or using the Service You agree to be bound by these Terms and Conditions. If You disagree with any part of these Terms and Conditions then You may not access the Service.
+                </p>
+                <p>
+                    You represent that you are over the age of 18. The Company does not permit those under 18 to use the Service.
+                </p>
+                <p>
+                    Your access to and use of the Service is also conditioned on Your acceptance of and compliance with the Privacy Policy of the Company. Our Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your personal information when You use the Application or the Website and tells You about Your privacy rights and how the law protects You. Please read Our Privacy Policy carefully before using Our Service.
+                </p>
+            </div>
+
+            <div id="links" class="section">
+                <h2>Links to Other Websites</h2>
+                <p>
+                    Our Service may contain links to third-party web sites or services that are not owned or controlled by the Company.
+                </p>
+                <p>
+                    The Company has no control over, and assumes no responsibility for, the content, privacy policies, or practices of any third party web sites or services. You further acknowledge and agree that the Company shall not be responsible or liable, directly or indirectly, for any damage or loss caused or alleged to be caused by or in connection with the use of or reliance on any such content, goods or services available on or through any such web sites or services.
+                </p>
+                <p>
+                    We strongly advise You to read the terms and conditions and privacy policies of any third-party web sites or services that You visit.
+                </p>
+            </div>
+
+            <div id="termination" class="section">
+                <h2>Termination</h2>
+                <p>
+                    We may terminate or suspend Your access immediately, without prior notice or liability, for any reason whatsoever, including without limitation if You breach these Terms and Conditions.
+                </p>
+                <p>
+                    Upon termination, Your right to use the Service will cease immediately.
+                </p>
+            </div>
+
+            <div id="liability" class="section">
+                <h2>Limitation of Liability</h2>
+                <p>
+                    Notwithstanding any damages that You might incur, the entire liability of the Company and any of its suppliers under any provision of this Terms and Your exclusive remedy for all of the foregoing shall be limited to the amount actually paid by You through the Service or 100 USD if You haven't purchased anything through the Service.
+                </p>
+                <p>
+                    To the maximum extent permitted by applicable law, in no event shall the Company or its suppliers be liable for any special, incidental, indirect, or consequential damages whatsoever (including, but not limited to, damages for loss of profits, loss of data or other information, for business interruption, for personal injury, loss of privacy arising out of or in any way related to the use of or inability to use the Service, third-party software and/or third-party hardware used with the Service, or otherwise in connection with any provision of this Terms), even if the Company or any supplier has been advised of the possibility of such damages and even if the remedy fails of its essential purpose.
+                </p>
+                <p>
+                    Some states do not allow the exclusion of implied warranties or limitation of liability for incidental or consequential damages, which means that some of the above limitations may not apply. In these states, each party's liability will be limited to the greatest extent permitted by law.
+                </p>
+            </div>
+
+            <div id="disclaimer" class="section">
+                <h2>"AS IS" and "AS AVAILABLE" Disclaimer</h2>
+                <p>
+                    The Service is provided to You "AS IS" and "AS AVAILABLE" and with all faults and defects without warranty of any kind. To the maximum extent permitted under applicable law, the Company, on its own behalf and on behalf of its Affiliates and its and their respective licensors and service providers, expressly disclaims all warranties, whether express, implied, statutory or otherwise, with respect to the Service, including all implied warranties of merchantability, fitness for a particular purpose, title and non-infringement, and warranties that may arise out of course of dealing, course of performance, usage or trade practice.
+                </p>
+                <p>
+                    Without limitation to the foregoing, the Company provides no warranty or undertaking, and makes no representation of any kind that the Service will meet Your requirements, achieve any intended results, be compatible or work with any other software, applications, systems or services, operate without interruption, meet any performance or reliability standards or be error free or that any errors or defects can or will be corrected.
+                </p>
+                <p>
+                    Without limiting the foregoing, neither the Company nor any of the company's provider makes any representation or warranty of any kind, express or implied: (i) as to the operation or availability of the Service, or the information, content, and materials or products included thereon; (ii) that the Service will be uninterrupted or error-free; (iii) as to the accuracy, reliability, or currency of any information or content provided through the Service; or (iv) that the Service, its servers, the content, or e-mails sent from or on behalf of the Company are free of viruses, scripts, trojan horses, worms, malware, timebombs or other harmful components.
+                </p>
+                <p>
+                    Some jurisdictions do not allow the exclusion of certain types of warranties or limitations on applicable statutory rights of a consumer, so some or all of the above exclusions and limitations may not apply to You. But in such a case the exclusions and limitations set forth in this section shall be applied to the greatest extent enforceable under applicable law.
+                </p>
+            </div>
+
+            <div id="governing-law" class="section">
+                <h2>Governing Law</h2>
+                <p>
+                    The laws of the Country, excluding its conflicts of law rules, shall govern this Terms and Your use of the Service. Your use of the Application may also be subject to other local, state, national, or international laws.
+                </p>
+            </div>
+
+            <div id="disputes" class="section">
+                <h2>Disputes Resolution</h2>
+                <p>
+                    If You have any concern or dispute about the Service, You agree to first try to resolve the dispute informally by contacting the Company.
+                </p>
+
+                <h3>For European Union (EU) Users</h3>
+                <p>
+                    If You are a European Union consumer, you will benefit from any mandatory provisions of the law of the country in which You are resident.
+                </p>
+
+                <h3>United States Legal Compliance</h3>
+                <p>
+                    You represent and warrant that (i) You are not located in a country that is subject to the United States government embargo, or that has been designated by the United States government as a "terrorist supporting" country, and (ii) You are not listed on any United States government list of prohibited or restricted parties.
+                </p>
+            </div>
+
+            <div id="severability" class="section">
+                <h2>Severability and Waiver</h2>
+                
+                <h3>Severability</h3>
+                <p>
+                    If any provision of these Terms is held to be unenforceable or invalid, such provision will be changed and interpreted to accomplish the objectives of such provision to the greatest extent possible under applicable law and the remaining provisions will continue in full force and effect.
+                </p>
+
+                <h3>Waiver</h3>
+                <p>
+                    Except as provided herein, the failure to exercise a right or to require performance of an obligation under these Terms shall not affect a party's ability to exercise such right or require such performance at any time thereafter nor shall the waiver of a breach constitute a waiver of any subsequent breach.
+                </p>
+
+                <h3>Translation Interpretation</h3>
+                <p>
+                    These Terms and Conditions may have been translated if We have made them available to You on our Service. You agree that the original English text shall prevail in the case of a dispute.
+                </p>
+            </div>
+
+            <div id="changes" class="section">
+                <h2>Changes to These Terms and Conditions</h2>
+                <p>
+                    We reserve the right, at Our sole discretion, to modify or replace these Terms at any time. If a revision is material We will make reasonable efforts to provide at least 30 days' notice prior to any new terms taking effect. What constitutes a material change will be determined at Our sole discretion.
+                </p>
+                <p>
+                    By continuing to access or use Our Service after those revisions become effective, You agree to be bound by the revised terms. If You do not agree to the new terms, in whole or in part, please stop using the website and the Service.
+                </p>
+            </div>
+
+            <div id="contact" class="section">
+                <div class="contact-card">
+                    <h3>Have Questions?</h3>
+                    <p>
+                        If you have any questions about these Terms and Conditions, we're here to help.
+                    </p>
+                    <a href="mailto:info@buyoffplanuae.com" title="mail">info@buyoffplanuae.com</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

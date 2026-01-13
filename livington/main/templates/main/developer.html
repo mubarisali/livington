@@ -1,0 +1,603 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %} Connect with Verified Developers for Dubai Off-Plan Properties {% endblock %}
+{% block meta_description %}BuyOffPlanUAE.com connects you with Dubai's top off-plan developers, offering expert guidance, verified listings, and smart property investments.{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+    .developer-page {
+        min-height: 100vh;
+        background: #f9fafb;
+    }
+
+    /* Hero Section */
+    .hero-developer {
+        position: relative;
+        min-height: 50vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        margin-top: 0;
+        padding-top: 5rem;
+    }
+
+    .hero-developer-bg {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+    }
+
+    .hero-developer-bg img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        animation: scaleIn 1.5s ease-out;
+    }
+
+    @keyframes scaleIn {
+        from {
+            transform: scale(1.05);
+        }
+        to {
+            transform: scale(1);
+        }
+    }
+
+    .hero-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to bottom, rgba(249, 250, 251, 0.95), rgba(249, 250, 251, 0.9), rgba(249, 250, 251, 1));
+    }
+
+    .hero-decorative {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        pointer-events: none;
+    }
+
+    .decorative-circle-1 {
+        position: absolute;
+        top: 5rem;
+        right: 2.5rem;
+        width: 18rem;
+        height: 18rem;
+        background: rgba(245, 158, 11, 0.05);
+        border-radius: 50%;
+        filter: blur(60px);
+        animation: pulse 2s ease-in-out infinite;
+    }
+
+    .decorative-circle-2 {
+        position: absolute;
+        bottom: 5rem;
+        left: 2.5rem;
+        width: 24rem;
+        height: 24rem;
+        background: rgba(59, 130, 246, 0.1);
+        border-radius: 50%;
+        filter: blur(60px);
+        animation: pulse 2s ease-in-out infinite;
+        animation-delay: 1s;
+    }
+
+    @keyframes pulse {
+        0%, 100% {
+            opacity: 1;
+        }
+        50% {
+            opacity: 0.6;
+        }
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 10;
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 0 1rem;
+        padding-top: 3rem;
+        text-align: center;
+        animation: fadeInUp 0.8s ease-out;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .hero-title {
+        font-size: clamp(2.5rem, 6vw, 4rem);
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        line-height: 1.2;
+        color: #1e3a5f;
+    }
+
+    .hero-title .brand-name {
+        background: linear-gradient(135deg, #1e3a5f 0%, #c7b04c 50%, #3b82f6 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: shimmer 3s linear infinite;
+        background-size: 200% auto;
+    }
+
+    @keyframes shimmer {
+        to {
+            background-position: 200% center;
+        }
+    }
+
+    .hero-subtitle {
+        font-size: clamp(1.125rem, 2vw, 1.5rem);
+        color: #64748b;
+        line-height: 1.6;
+        max-width: 56rem;
+        margin: 0 auto;
+    }
+
+    /* Main Content */
+    .developer-content {
+        padding: 3rem 1rem 5rem;
+        max-width: 1280px;
+        margin: 0 auto;
+    }
+
+    .section-header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .section-title {
+        font-size: clamp(2rem, 4vw, 2.5rem);
+        font-weight: 700;
+        margin-bottom: 1rem;
+        background: linear-gradient(135deg, #1e3a5f, #c7b04c);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .section-subtitle {
+        font-size: 1.125rem;
+        color: #64748b;
+    }
+
+    /* Developers Grid */
+    .developers-grid {
+        display: grid;
+        grid-template-columns:repeat(3, 1fr);
+        gap: 2rem;
+        margin-bottom: 3rem;
+    }
+
+    .developer-card-wrapper {
+        text-decoration: none;
+        display: block;
+        position: relative;
+    }
+
+    .developer-card {
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 1rem;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        position: relative;
+        height: 370px;
+        display: flex;
+        flex-direction: column;
+        cursor: pointer;
+    }
+
+    .developer-card:hover {
+        border-color: rgba(199, 176, 76, 0.4);
+        box-shadow: 0 20px 40px rgba(199, 176, 76, 0.15);
+        transform: translateY(-8px);
+    }
+
+    .developer-logo-wrapper {
+        position: relative;
+        height: 200px;
+        background: linear-gradient(135deg, rgba(245, 158, 11, 0.03), rgba(59, 130, 246, 0.03));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    .developer-logo {
+        max-width: 180px;
+        max-height: 140px;
+        object-fit: contain;
+        transition: transform 0.3s ease;
+    }
+
+    .developer-card:hover .developer-logo {
+        transform: scale(1.05);
+    }
+
+    .developer-info {
+        padding: 1.5rem;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+        flex: 1;
+    }
+
+    .developer-name {
+        font-size: 1rem;
+        font-weight: 700;
+        color: #1e3a5f;
+        line-height: 1.3;
+    }
+
+    .developer-actions {
+        display: flex;
+        gap: 1.5rem;
+        justify-content: center;
+        margin-top: auto;
+    }
+
+    .action-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 3.5rem;
+        height: 3.5rem;
+        border-radius: 10px;
+        font-size: 1.5rem;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        position: relative;
+        z-index: 10;
+    }
+
+    .whatsapp-btn {
+        background: #c7b04c;
+        color: white;
+        border: none;
+    }
+
+    .whatsapp-btn:hover {
+        background: #b09940;
+        transform: translateY(-4px) scale(1.05);
+        box-shadow: 0 8px 20px rgba(199, 176, 76, 0.4);
+    }
+
+    .contact-btn {
+        background: #1e3a5f;
+        color: white;
+        border: none;
+    }
+
+    .contact-btn:hover {
+        background: #2c5282;
+        transform: translateY(-4px) scale(1.05);
+        box-shadow: 0 8px 20px rgba(30, 58, 95, 0.4);
+    }
+
+    /* SEO Content - Hidden from view but visible to search engines */
+    .seo-content {
+        position: absolute;
+        left: -9999px;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+    }
+
+    /* Pagination */
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 3rem;
+    }
+
+    .page-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.5rem;
+        height: 2.5rem;
+        border: 1px solid #e5e7eb;
+        border-radius: 0.5rem;
+        color: #64748b;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-weight: 500;
+    }
+
+    .page-link:hover {
+        border-color: #c7b04c;
+        color: #c7b04c;
+        background: rgba(245, 158, 11, 0.05);
+    }
+
+    .page-link.active {
+        background: linear-gradient(135deg, #1e3a5f, #2c5282);
+        color: white;
+        border-color: #1e3a5f;
+    }
+
+    .page-link.disabled {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: 5rem 1rem;
+    }
+
+    .empty-icon {
+        font-size: 4rem;
+        color: #cbd5e1;
+        margin-bottom: 1.5rem;
+    }
+
+    .empty-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #64748b;
+        margin-bottom: 0.5rem;
+    }
+
+    .empty-text {
+        color: #94a3b8;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .hero-developer {
+            padding-top: 3rem;
+            min-height: 40vh;
+        }
+
+        .hero-content {
+            padding-top: 2rem;
+        }
+
+        .developers-grid {
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .pagination {
+            gap: 0.25rem;
+        }
+
+        .page-link {
+            width: 2.25rem;
+            height: 2.25rem;
+            font-size: 0.875rem;
+        }
+
+        .developer-card {
+            height: auto;
+        }
+    }
+</style>
+
+<div class="developer-page">
+    <!-- Hero Section -->
+    <section class="hero-developer">
+        <div class="hero-developer-bg">
+            <img src="{% static 'img/hero.avif' %}" alt="Developers" title="img of developer">
+            <div class="hero-overlay"></div>
+        </div>
+
+        <div class="hero-decorative">
+            <div class="decorative-circle-1"></div>
+            <div class="decorative-circle-2"></div>
+        </div>
+
+        <div class="hero-content">
+            <h1 class="hero-title">
+                Premium <span class="brand-name">Developers</span>
+            </h1>
+            <p class="hero-subtitle">
+                Discover UAE's leading real estate developers creating exceptional off-plan properties
+            </p>
+        </div>
+    </section>
+
+    <!-- SEO Content - Hidden from users but visible to search engines -->
+    <div class="seo-content">
+        <section>
+            <h2>Dubai's Most Trusted Property Developers</h2>
+            
+            <p>
+                BuyOffPlanUAE.com connects you with Dubai's premier property developers who are shaping the emirate's skyline with innovative and luxurious residential and commercial projects. Our curated selection of verified developers represents the pinnacle of quality, reliability, and excellence in Dubai's dynamic real estate market. Each developer on our platform has been carefully vetted to ensure they meet the highest standards of construction quality, timely delivery, and customer satisfaction.
+            </p>
+            
+            <p>
+                These leading developers bring decades of combined experience in creating world-class communities that blend modern architecture with cutting-edge amenities. From waterfront residences and luxury penthouses to family-friendly villas and smart apartments, our developer partners offer diverse portfolios catering to every lifestyle and investment goal. Whether you're a first-time homebuyer, seasoned investor, or looking for your dream luxury residence, you'll find properties from award-winning developers known for their commitment to excellence and innovation.
+            </p>
+            
+            <p>
+                Dubai's real estate landscape continues to attract global attention, and our partner developers are at the forefront of this growth. They deliver not just properties, but complete lifestyle solutions with integrated communities featuring retail outlets, educational facilities, healthcare centers, and recreational spaces. With flexible payment plans, attractive off-plan prices, and guaranteed returns on investment, these developers make property ownership in Dubai accessible and rewarding for buyers from around the world.
+            </p>
+        </section>
+
+        <section>
+            <h2>Why Choose Developers from BuyOffPlanUAE.com</h2>
+            
+            <h3>Verified & Trusted</h3>
+            <p>Every developer on our platform undergoes rigorous verification to ensure they meet international standards of quality, transparency, and financial stability. We partner only with developers who have proven track records of successful project delivery and satisfied customers.</p>
+
+            <h3>Award-Winning Projects</h3>
+            <p>Our developer partners have received numerous industry accolades for architectural excellence, sustainable design, and innovative community planning. Their projects set benchmarks in quality construction, modern amenities, and value for money across various price segments.</p>
+
+            <h3>Transparent Dealings</h3>
+            <p>All developers maintain complete transparency in their operations, pricing, and payment schedules. You'll receive clear documentation, regular project updates, and direct access to developer representatives who can address your questions and concerns promptly.</p>
+
+            <h3>Timely Delivery</h3>
+            <p>Our partner developers have established reputations for delivering projects on schedule or ahead of time. Their commitment to meeting deadlines ensures your investment timelines remain predictable and your property handover happens as planned without unnecessary delays.</p>
+
+            <h3>Strong Investment Returns</h3>
+            <p>Properties from our featured developers consistently deliver excellent capital appreciation and rental yields. Strategic locations, quality construction, and desirable amenities ensure your investment grows in value while generating attractive passive income opportunities.</p>
+
+            <h3>Customer-Centric Approach</h3>
+            <p>These developers prioritize customer satisfaction throughout the buying journey. From initial consultation and property selection to post-handover support, you'll experience professional service, clear communication, and dedicated assistance at every stage of your property purchase.</p>
+        </section>
+
+        <section>
+            <h2>Investment Opportunities with Leading Dubai Developers</h2>
+            
+            <p>
+                Investing in properties from established Dubai developers offers numerous advantages that extend beyond simple property ownership. These developers create comprehensive communities that appreciate in value faster than standard residential developments. Their projects are strategically located in high-growth areas with excellent connectivity to business districts, shopping centers, educational institutions, and entertainment venues, ensuring sustained demand from both buyers and renters.
+            </p>
+            
+            <p>
+                Off-plan properties from reputable developers provide significant financial benefits including flexible payment plans that allow you to spread payments over the construction period, often requiring just 10-20% down payment. Early investors typically benefit from pre-launch and construction-phase pricing that can be 20-30% below market rates upon completion. Additionally, many developers offer attractive rental guarantee programs, buyback options, and post-handover payment plans that make investing more accessible and less financially burdensome.
+            </p>
+            
+            <p>
+                The Dubai property market continues to attract international investors due to favorable regulations, tax-free environment, and strong rental yields averaging 6-9% annually. Properties from premium developers command higher rental rates and maintain better occupancy levels, ensuring steady cash flow for investors. With visa opportunities linked to property ownership, freehold ownership rights for foreign investors, and the emirate's position as a global business hub, investing in properties from our featured developers represents a strategic entry into one of the world's most dynamic real estate markets.
+            </p>
+        </section>
+
+        <section>
+            <h2>Frequently Asked Questions About Dubai Developers</h2>
+            
+            <h3>How do I choose the right developer for my investment?</h3>
+            <p>Choose developers based on their track record of completed projects, delivery timelines, financial stability, and customer reviews. Look for developers with established reputations in your preferred location and property type. Our platform provides comprehensive information about each developer's portfolio, helping you make informed decisions based on quality, location, and investment potential.</p>
+
+            <h3>What payment plans do developers typically offer?</h3>
+            <p>Dubai developers offer various payment structures including construction-linked plans (pay percentages at specific construction milestones), post-handover plans (extend payments 1-5 years after completion), and flexible installment options. Down payments typically range from 10-30%, with the balance spread over the construction period and sometimes beyond handover, making property ownership more accessible.</p>
+
+            <h3>Are properties from established developers better investments?</h3>
+            <p>Properties from reputable developers generally offer better investment security, higher resale values, and stronger rental demand. Established developers have proven construction quality, timely delivery records, and prime locations that attract discerning buyers and tenants. Their projects tend to appreciate faster and maintain value better during market fluctuations compared to properties from less established developers.</p>
+
+            <h3>Can foreign investors buy properties from these developers?</h3>
+            <p>Yes, foreign investors can purchase properties in designated freehold areas across Dubai without restrictions. Our featured developers primarily build in freehold zones, allowing international buyers full ownership rights. Some developers also offer assistance with residency visa applications linked to property purchases, making Dubai property ownership attractive for foreign investors seeking both investment returns and lifestyle benefits.</p>
+
+            <h3>What happens if a developer delays project completion?</h3>
+            <p>Dubai's Real Estate Regulatory Authority (RERA) protects buyers through strict regulations governing developer conduct and project timelines. Reputable developers maintain insurance and provide compensation for significant delays. Our featured developers have strong delivery records, but in rare cases of delays, buyers typically receive extensions on payment deadlines or compensation as outlined in purchase agreements and regulated by Dubai Land Department.</p>
+        </section>
+    </div>
+
+    <!-- Main Content -->
+    <div class="developer-content">
+        <!-- Section Header -->
+        <div class="section-header">
+            <h2 class="section-title">Our Developer Partners</h2>
+            <p class="section-subtitle">{{ total_developers }} trusted developers with premium projects</p>
+        </div>
+
+        <!-- Developers Grid -->
+        {% if developers %}
+        <div class="developers-grid">
+            {% for developer in developers %}
+                <div class="developer-card">
+            <a href="{% url 'main:developer_detail' slug=developer.slug %}" class="developer-card-wrapper" style="text-decoration: none;">
+
+                    <div class="developer-logo-wrapper">
+                        {% if developer.logo %}
+                        <img src="{{ developer.logo }}" alt="{{ developer.name }}" title="{{ developer.name }}" class="developer-logo">
+                        {% else %}
+                        <div style="font-size: 3rem; color: #cbd5e1;">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="developer-info">
+                        <h3 class="developer-name">{{ developer.name }}</h3>
+                        
+                        <div class="developer-actions">
+                            <a href="https://wa.me/971555478352?text=Hi, I'm interested in {{ developer.name }} properties" 
+                               class="action-btn whatsapp-btn" 
+                               target="_blank"
+                               title="Chat on WhatsApp"
+                               onclick="event.stopPropagation(); event.preventDefault(); window.open(this.href, '_blank');">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+                            <a href="tel:+971555478352" 
+                               class="action-btn contact-btn"
+                               title="Call Us"
+                               onclick="event.stopPropagation(); event.preventDefault(); window.location.href=this.href;">
+                                <i class="fas fa-phone"></i>
+                            </a>
+                        </div>
+                    </div>
+            </a>
+
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if developers.has_other_pages %}
+        <div class="pagination">
+            {% if developers.has_previous %}
+            <a href="?page=1" class="page-link">
+                <i class="fas fa-angle-double-left"></i>
+            </a>
+            <a href="?page={{ developers.previous_page_number }}" class="page-link">
+                <i class="fas fa-angle-left"></i>
+            </a>
+            {% else %}
+            <span class="page-link disabled">
+                <i class="fas fa-angle-double-left"></i>
+            </span>
+            <span class="page-link disabled">
+                <i class="fas fa-angle-left"></i>
+            </span>
+            {% endif %}
+
+            {% for num in developers.paginator.page_range %}
+                {% if developers.number == num %}
+                <span class="page-link active">{{ num }}</span>
+                {% elif num > developers.number|add:'-3' and num < developers.number|add:'3' %}
+                <a href="?page={{ num }}" class="page-link">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+
+            {% if developers.has_next %}
+            <a href="?page={{ developers.next_page_number }}" class="page-link">
+                <i class="fas fa-angle-right"></i>
+            </a>
+            <a href="?page={{ developers.paginator.num_pages }}" class="page-link">
+                <i class="fas fa-angle-double-right"></i>
+            </a>
+            {% else %}
+            <span class="page-link disabled">
+                <i class="fas fa-angle-right"></i>
+            </span>
+            <span class="page-link disabled">
+                <i class="fas fa-angle-double-right"></i>
+            </span>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">
+                <i class="fas fa-building"></i>
+            </div>
+            <h3 class="empty-title">No Developers Found</h3>
+            <p class="empty-text">We're constantly adding new developer partners. Check back soon!</p>
+        </div>
+        {% endif %}
+    </div>
+
+</div>
+
+{% endblock %}

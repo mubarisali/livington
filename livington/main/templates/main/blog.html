@@ -1,0 +1,619 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ page_title }}{% endblock %}
+{% block meta_description %}{{ meta_description }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+        color: #333;
+    }
+
+    .blog-page {
+        padding: 140px 0 60px 0;
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Decorative Background Elements */
+    .bg-decoration {
+        position: absolute;
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    .circle-1 {
+        top: 100px;
+        right: -100px;
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(circle, rgba(212, 165, 116, 0.1) 0%, transparent 70%);
+        border-radius: 50%;
+        animation: float 8s ease-in-out infinite;
+    }
+
+    .circle-2 {
+        bottom: 100px;
+        left: -150px;
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(circle, rgba(44, 62, 80, 0.08) 0%, transparent 70%);
+        border-radius: 50%;
+        animation: float 10s ease-in-out infinite reverse;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0) scale(1); }
+        50% { transform: translateY(-30px) scale(1.05); }
+    }
+
+    /* Hero Section */
+    .blog-hero {
+        max-width: 1400px;
+        margin: 0 auto 80px;
+        padding: 0 20px;
+        text-align: center;
+        position: relative;
+        z-index: 1;
+        animation: fadeInDown 0.8s ease-out;
+    }
+
+    @keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 24px;
+        background: linear-gradient(135deg, #c7b04c 0%, #c7b04c 100%);
+        color: white;
+        border-radius: 50px;
+        font-size: 13px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 25px;
+        box-shadow: 0 4px 15px rgba(212, 165, 116, 0.3);
+        animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+    }
+
+    .hero-title {
+        font-size: clamp(2.5rem, 6vw, 4.5rem);
+        font-weight: 800;
+        margin-bottom: 20px;
+        line-height: 1.2;
+        background: linear-gradient(135deg, #2c3e50 0%, #c7b04c 50%, #2c3e50 100%);
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+       animation: shimmer 25s linear infinite;
+    }
+
+    @keyframes shimmer {
+        to { background-position: 200% center; }
+    }
+
+    .hero-description {
+        font-size: 1.2rem;
+        color: #6c757d;
+        max-width: 700px;
+        margin: 0 auto 40px;
+        line-height: 1.8;
+    }
+
+    /* Blog Grid */
+    .blog-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 20px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .blog-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+        margin-bottom: 60px;
+    }
+
+    /* Blog Card */
+    .blog-card {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        cursor: pointer;
+        position: relative;
+        animation: fadeInUp 0.6s ease-out backwards;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(40px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .blog-card:nth-child(1) { animation-delay: 0.1s; }
+    .blog-card:nth-child(2) { animation-delay: 0.2s; }
+    .blog-card:nth-child(3) { animation-delay: 0.3s; }
+    .blog-card:nth-child(4) { animation-delay: 0.4s; }
+    .blog-card:nth-child(5) { animation-delay: 0.5s; }
+    .blog-card:nth-child(6) { animation-delay: 0.6s; }
+
+    .blog-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(212, 165, 116, 0.1), rgba(44, 62, 80, 0.1));
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: 1;
+        pointer-events: none;
+    }
+
+    .blog-card:hover::before {
+        opacity: 1;
+    }
+
+    .blog-card:hover {
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: 0 20px 40px rgba(212, 165, 116, 0.25);
+    }
+
+    /* Featured Card - First item larger */
+    .blog-card.featured {
+        grid-column: span 2;
+        grid-row: span 2;
+    }
+
+    .blog-card.featured .card-image {
+        height: 450px;
+    }
+
+    .blog-card.featured .card-content {
+        padding: 40px;
+    }
+
+    .blog-card.featured .card-title {
+        font-size: 2.2rem;
+    }
+
+    .blog-card.featured .card-excerpt {
+        font-size: 1.1rem;
+        display: block;
+    }
+
+    /* Card Image */
+    .card-image {
+        position: relative;
+        height: 240px;
+        background: linear-gradient(135deg, rgba(212, 165, 116, 0.3), rgba(44, 62, 80, 0.3));
+        overflow: hidden;
+    }
+
+    .card-image::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.7) 100%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .blog-card:hover .card-image::after {
+        opacity: 1;
+    }
+
+    .card-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s ease;
+    }
+
+    .blog-card:hover .card-image img {
+        transform: scale(1.1) rotate(2deg);
+    }
+
+    /* Card Content */
+    .card-content {
+        padding: 30px;
+        position: relative;
+        z-index: 2;
+    }
+
+    .card-meta {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 15px;
+        flex-wrap: wrap;
+    }
+
+    .card-title {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 12px;
+        line-height: 1.4;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        transition: color 0.3s ease;
+    }
+
+    .blog-card:hover .card-title {
+        color: #c7b04c;
+    }
+
+    .card-excerpt {
+        color: #6c757d;
+        font-size: 0.95rem;
+        line-height: 1.7;
+        margin-bottom: 20px;
+        display: none;
+    }
+
+    .blog-card.featured .card-excerpt {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .read-more {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: #c7b04c;
+        font-weight: 600;
+        font-size: 0.9rem;
+        text-decoration: none;
+        transition: gap 0.3s ease;
+    }
+
+    .blog-card:hover .read-more {
+        gap: 12px;
+    }
+
+    .read-more i {
+        transition: transform 0.3s ease;
+    }
+
+    .blog-card:hover .read-more i {
+        transform: translateX(3px);
+    }
+
+    /* Pagination */
+    .pagination-section {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 60px;
+        gap: 10px;
+    }
+
+    .pagination-btn,
+    .pagination-number {
+        min-width: 45px;
+        height: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: white;
+        border: 2px solid #e8e8e8;
+        border-radius: 12px;
+        color: #6c757d;
+        font-weight: 600;
+        font-size: 0.95rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        padding: 0 15px;
+    }
+
+    .pagination-btn:hover:not(.disabled),
+    .pagination-number:hover:not(.active) {
+        border-color: #c7b04c;
+        color: #c7b04c;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(212, 165, 116, 0.2);
+    }
+
+    .pagination-number.active {
+        background: linear-gradient(135deg, #c7b04c 0%, #c7b04c 100%);
+        border-color: #c7b04c;
+        color: white;
+        box-shadow: 0 4px 15px rgba(212, 165, 116, 0.3);
+    }
+
+    .pagination-btn.disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+        border-color: #e8e8e8;
+    }
+
+    .pagination-btn i {
+        font-size: 0.9rem;
+    }
+
+    .pagination-ellipsis {
+        min-width: 45px;
+        height: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #6c757d;
+        font-weight: 600;
+    }
+
+    /* Floating Buttons */
+    .floating-buttons {
+        position: fixed;
+        bottom: 6rem;
+        right: 2rem;
+        display: flex;
+        gap: 1rem;
+        z-index: 100;
+        animation: fadeInUp 1s ease-out 0.6s backwards;
+    }
+
+    .float-btn {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 1rem 1.5rem;
+        background: #475569;
+        color: white;
+        border: none;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        cursor: pointer;
+        box-shadow: 0 10px 30px rgba(71, 85, 105, 0.3);
+        transition: all 0.3s ease;
+        text-decoration: none;
+    }
+
+    .float-btn:hover {
+        background: #334155;
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(71, 85, 105, 0.4);
+    }
+
+    .float-btn i {
+        font-size: 1.25rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 1200px) {
+        .blog-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .blog-card.featured {
+            grid-column: span 2;
+            grid-row: span 1;
+        }
+
+        .blog-card.featured .card-image {
+            height: 350px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .blog-page {
+            padding: 120px 0 40px 0;
+        }
+
+        .blog-grid {
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+
+        .blog-card.featured {
+            grid-column: span 1;
+        }
+
+        .blog-card.featured .card-image {
+            height: 280px;
+        }
+
+        .blog-card.featured .card-content {
+            padding: 30px;
+        }
+
+        .blog-card.featured .card-title {
+            font-size: 1.6rem;
+        }
+
+        .card-image {
+            height: 220px;
+        }
+
+        .pagination-section {
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .pagination-btn,
+        .pagination-number {
+            min-width: 40px;
+            height: 40px;
+            font-size: 0.9rem;
+        }
+
+        /* Mobile: Stack buttons vertically and make circular */
+        .floating-buttons {
+            flex-direction: column;
+            bottom: 5rem;
+            right: 1.5rem;
+            gap: 0.75rem;
+        }
+
+        .float-btn {
+            width: 56px;
+            height: 56px;
+            padding: 0;
+            border-radius: 50%;
+            justify-content: center;
+            box-shadow: 0 8px 20px rgba(71, 85, 105, 0.35);
+        }
+
+        .float-btn span {
+            display: none;
+        }
+
+        .float-btn i {
+            font-size: 1.5rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .hero-title {
+            font-size: 2rem;
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="blog-page">
+    <!-- Background Decorations -->
+    <div class="bg-decoration circle-1"></div>
+    <div class="bg-decoration circle-2"></div>
+
+    <!-- Hero Section -->
+    <section class="blog-hero">
+        <div class="hero-badge">
+            <i class="fas fa-newspaper"></i>
+            Our Blog
+        </div>
+        <h1 class="hero-title">Real Estate Insights & News</h1>
+        <p class="hero-description">
+            Stay updated with the latest trends, market insights, and expert advice on UAE's off-plan property market
+        </p>
+    </section>
+
+    <!-- Blog Grid -->
+    <div class="blog-container">
+        <div class="blog-grid">
+            {% for post in blog_posts %}
+            <article class="blog-card {% if forloop.first %}featured{% endif %}">
+                <div class="card-image">
+                    {% if post.featured_image %}
+                        <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" title="{{ post.title }}">
+                    {% else %}
+                        <img src="{% static 'img/hero.avif' %}" alt="{{ post.title }}" title="{{ post.title }}">
+                    {% endif %}
+                </div>
+                <div class="card-content">
+                    <div class="card-meta">
+                        <div class="meta-item">
+                            <i class="far fa-calendar"></i>
+                            <span>{{ post.published_at|date:"M d, Y" }}</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="far fa-user"></i>
+                            <span>{{ post.author }}</span>
+                        </div>
+                    </div>
+                    <h2 class="card-title">{{ post.title }}</h2>
+                    <p class="card-excerpt">{{ post.excerpt }}</p>
+                    <a href="{% url 'main:blog_detail' post.slug %}" class="read-more" title="read full article">
+                        Read Full Article
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination Section -->
+        {% if page_obj.has_other_pages %}
+        <div class="pagination-section">
+            <!-- Previous Button -->
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}" title="previous" class="pagination-btn">
+                    <i class="fas fa-chevron-left"></i>
+                </a>
+            {% else %}
+                <span class="pagination-btn disabled">
+                    <i class="fas fa-chevron-left"></i>
+                </span>
+            {% endif %}
+
+            <!-- Page Numbers -->
+            {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                    <span class="pagination-number active">{{ num }}</span>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                    <a href="?page={{ num }}" title="page no" class="pagination-number">{{ num }}</a>
+                {% elif num == 1 or num == page_obj.paginator.num_pages %}
+                    <a href="?page={{ num }}" title="no of page" class="pagination-number">{{ num }}</a>
+                {% elif num == page_obj.number|add:'-3' or num == page_obj.number|add:'3' %}
+                    <span class="pagination-ellipsis">...</span>
+                {% endif %}
+            {% endfor %}
+
+            <!-- Next Button -->
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}" title="nxt button" class="pagination-btn">
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+            {% else %}
+                <span class="pagination-btn disabled">
+                    <i class="fas fa-chevron-right"></i>
+                </span>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

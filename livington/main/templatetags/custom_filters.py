@@ -1,0 +1,83 @@
+from django import template
+
+register = template.Library()
+
+ICON_MAP = {
+    'Basketball Playground': 'fas fa-basketball-ball',
+    'Cabana Seating': 'fas fa-chair',
+    'Club House': 'fas fa-building',
+    'Covered Parking': 'fas fa-car',
+    'Garden': 'fas fa-seedling',
+    'Mosque': 'fas fa-mosque',
+    'Paddle Playground': 'fas fa-table-tennis',
+    'Playground': 'fas fa-child',
+    'Retail Shops': 'fas fa-store',
+    'School': 'fas fa-school',
+    'Skate Park': 'fas fa-skating',
+    'Swimming Pool': 'fas fa-swimming-pool',
+    'Tennis Playground': 'fas fa-table-tennis',
+    "children's play area": 'fas fa-child',
+    'Cinema': 'fas fa-film',
+    'Co-Working Spaces': 'fas fa-briefcase',
+    'Games Lounge Room': 'fas fa-gamepad',
+    'Gym': 'fas fa-dumbbell',
+    'Jogging Track': 'fas fa-running',
+    'Sunken Seating Area': 'fas fa-couch',
+    'Yuga Hall': 'fas fa-spa',
+    'BBQ Area': 'fas fa-hotdog',
+    'Concierge Service': 'fas fa-concierge-bell',
+    "Children's Swimming Pool": 'fas fa-baby',
+    'Jacuzzi': 'fas fa-hot-tub',
+    'Sauna': 'fas fa-temperature-high',
+    'Steam room': 'fas fa-cloud',
+    'Security': 'fas fa-shield-alt',
+    'Mini Golf': 'fas fa-golf-ball',
+    'Multipurpose Hall': 'fas fa-chalkboard',
+    'Squash Courts': 'fas fa-table-tennis',
+    'Consult': 'fas fa-user-md',
+    'Fitness Club': 'fas fa-dumbbell',
+    'Smart Homes': 'fas fa-home',
+    'Storage Rooms': 'fas fa-boxes',
+    'Cafe': 'fas fa-coffee',
+    'Cycling Track': 'fas fa-bicycle',
+    'Dog Park': 'fas fa-dog',
+    'Beauty Saloon': 'fas fa-cut',
+    'Mall': 'fas fa-shopping-bag',
+    'Restaurant': 'fas fa-utensils',
+    'Theater': 'fas fa-theater-masks',
+    'Volleyball Playground': 'fas fa-volleyball-ball',
+    'Golf playground': 'fas fa-golf-ball-tee',
+    'Badminton Court': 'fas fa-shuttlecock',  # not available, approximate
+    'Private Parking for Each unit': 'fas fa-parking',
+    'Electric Vehicle Charging Stations': 'fas fa-charging-station',
+    'Library': 'fas fa-book',
+    'Bicycle parking': 'fas fa-bicycle',
+    'Clinic': 'fas fa-briefcase-medical',
+    'Football Playground': 'fas fa-futbol',
+    'Pharmacy': 'fas fa-prescription-bottle-alt',
+    'Veterinary Clinic': 'fas fa-stethoscope',
+    'Supermarket': 'fas fa-shopping-cart',
+    'Nursery': 'fas fa-baby-carriage',
+    'Pet Shop': 'fas fa-paw',
+    'Sitting Area': 'fas fa-chair',
+    'Meeting Rooms': 'fas fa-users',
+    'Private Cinema For Each Unit': 'fas fa-video',
+    'Water Fountain': 'fas fa-water',
+    'Snow Rooms': 'fas fa-snowflake',
+    'VR Game Room': 'fas fa-vr-cardboard',
+    'Hospital': 'fas fa-hospital',
+    'Opera house': 'fas fa-music',
+    'Private Gym For Each Unit': 'fas fa-dumbbell',
+    'Bocce Play Area': 'fas fa-bowling-ball',
+    'Traverse climbing walls': 'fas fa-mountain',
+    'Music Room': 'fas fa-music',
+    'Lake': 'fas fa-water',
+}
+
+
+@register.filter
+def facility_icon(name):
+    if not name:
+        return 'fas fa-star'
+    normalized = name.strip().title()
+    return ICON_MAP.get(normalized, 'fas fa-star')

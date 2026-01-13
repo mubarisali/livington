@@ -1,0 +1,678 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% block title %} Exploring Dubai Communities for Smart Off-Plan Investments {% endblock %}
+{% block meta_description %}Discover Dubai's off-plan property communities with BuyOffPlanUAE.com — expert guidance, verified listings, and insights to find your ideal investment.{% endblock %}
+
+{% block extra_css %}
+<style>
+      .nav-menu a{
+        color: #fff;
+    }
+    .modern-header.scrolled .nav-menu a{
+        color: #000;
+    }
+    .communities-hero {
+        padding: 8rem 2rem 4rem;
+         background: linear-gradient(135deg, rgba(30, 58, 95, 0.85) 0%, rgba(15, 31, 58, 0.80) 100%),
+                url('{% static "img/hero.avif" %}') center/cover no-repeat;
+        text-align: center;
+        color: white;
+    }
+
+    .communities-hero h1 {
+        font-size: clamp(2.5rem, 5vw, 3.5rem);
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+
+    .communities-hero .highlight {
+        background: linear-gradient(135deg, #c7b04c, #d6c279);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .communities-hero p {
+        font-size: 1.2rem;
+        opacity: 0.9;
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+    /* SEO Content - Hidden from view but visible to search engines */
+    .seo-content {
+        position: absolute;
+        left: -9999px;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+    }
+
+    .communities-section {
+        padding: 4rem 2rem;
+        background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+    }
+
+    .communities-wrapper {
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    /* Filter Section */
+    .filter-section {
+        background: white;
+        padding: 2rem;
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+        margin-bottom: 3rem;
+    }
+
+    .filter-header {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .filter-header i {
+        color: #c7b04c;
+        font-size: 1.2rem;
+    }
+
+    .filter-header h3 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #1e293b;
+        margin: 0;
+    }
+
+    .city-filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+    }
+
+    .city-filter-btn {
+        padding: 0.6rem 1.5rem;
+        border: 2px solid #e5e7eb;
+        background: white;
+        border-radius: 50px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #475569;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .city-filter-btn:hover {
+        border-color: #c7b04c;
+        color: #c7b04c;
+        transform: translateY(-2px);
+    }
+
+    .city-filter-btn.active {
+        background: linear-gradient(135deg, #c7b04c 0%, #b79e58 100%);
+        color: white;
+        border-color: #c7b04c;
+    }
+
+    .city-filter-btn i {
+        font-size: 0.85rem;
+    }
+
+    /* Stats Bar */
+    .stats-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: white;
+        padding: 1.5rem 2rem;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        margin-bottom: 2rem;
+    }
+
+    .stats-info {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 1rem;
+        color: #64748b;
+    }
+
+    .stats-info i {
+        color: #c7b04c;
+    }
+
+    .stats-info strong {
+        color: #1e293b;
+        font-weight: 700;
+    }
+
+    .sort-dropdown {
+        padding: 0.6rem 1rem;
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        color: #475569;
+        background: white;
+        cursor: pointer;
+        font-weight: 500;
+    }
+
+    /* Community Grid */
+    .all-communities-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 2rem;
+        margin-bottom: 3rem;
+    }
+
+    .community-card {
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .community-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+    }
+
+    .community-image-wrapper {
+        position: relative;
+        height: 220px;
+        overflow: hidden;
+    }
+
+    .community-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .community-card:hover .community-image {
+        transform: scale(1.1);
+    }
+
+    .community-city-badge {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        background: rgba(30, 58, 95, 0.95);
+        color: white;
+        padding: 0.4rem 0.9rem;
+        border-radius: 8px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+    .community-count-badge {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        background: rgba(199, 176, 76, 0.95);
+        color: white;
+        padding: 0.4rem 0.9rem;
+        border-radius: 8px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+    .community-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+        padding: 2rem 1.5rem 1rem;
+    }
+
+    .community-name {
+        color: white;
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    .community-content {
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+
+    .community-stats {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+        flex: 1;
+    }
+
+    .stat-item {
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+        text-align: center;
+    }
+
+    .stat-label {
+        font-size: 0.75rem;
+        color: #94a3b8;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .stat-value {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #1e293b;
+    }
+
+    .view-properties-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        width: 100%;
+        padding: 0.85rem;
+        background: #1e3a5f;
+        color: white;
+        border-radius: 10px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: background 0.3s ease;
+    }
+
+    .view-properties-btn:hover {
+        background: #2d4a6f;
+    }
+
+    /* Pagination */
+    .pagination-wrapper {
+        display: flex;
+        justify-content: center;
+        margin-top: 3rem;
+    }
+
+    .pagination {
+        display: flex;
+        gap: 0.5rem;
+        list-style: none;
+        padding: 0;
+        flex-wrap: wrap;
+    }
+
+    .pagination a, .pagination span {
+        padding: 0.75rem 1.25rem;
+        background: white;
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+        color: #475569;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .pagination a:hover {
+        background: #c7b04c;
+        color: white;
+        border-color: #c7b04c;
+        transform: translateY(-2px);
+    }
+
+    .pagination .current {
+        background: #c7b04c;
+        color: white;
+        border-color: #c7b04c;
+    }
+
+    .pagination .disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+
+    /* Empty State */
+    .no-communities {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 4rem 2rem;
+        color: #64748b;
+    }
+
+    .no-communities i {
+        font-size: 4rem;
+        margin-bottom: 1.5rem;
+        opacity: 0.3;
+    }
+
+    .no-communities h3 {
+        font-size: 1.5rem;
+        color: #1e293b;
+        margin-bottom: 0.5rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .communities-hero {
+            padding: 6rem 1.5rem 3rem;
+        }
+
+        .filter-section {
+            padding: 1.5rem;
+        }
+
+        .city-filters {
+            gap: 0.5rem;
+        }
+
+        .stats-bar {
+            flex-direction: column;
+            gap: 1rem;
+            text-align: center;
+        }
+
+        .all-communities-grid {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        .pagination {
+            gap: 0.25rem;
+        }
+
+        .pagination a, .pagination span {
+            padding: 0.5rem 0.75rem;
+            font-size: 0.85rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="communities-hero">
+    <div>
+        <h1>
+            Explore <span class="highlight">UAE Communities</span>
+        </h1>
+        <p>
+            Discover the perfect neighborhood across Dubai, Abu Dhabi, and beyond. 
+            Browse {{ total_communities }} communities with {{ total_properties }} exclusive properties.
+        </p>
+    </div>
+</section>
+
+<!-- SEO Content - Hidden from users but visible to search engines -->
+<div class="seo-content">
+    <section>
+        <h2>Discover Premium Off-Plan Communities Across the UAE</h2>
+        <p>Welcome to BuyOffPlanUAE.com's comprehensive directory of UAE's most prestigious communities offering exceptional off-plan property opportunities. Our platform showcases {{ total_communities }} carefully curated communities featuring {{ total_properties }} premium properties across Dubai, Abu Dhabi, Sharjah, and other key emirates. Whether you're seeking luxury waterfront living, family-friendly suburban neighborhoods, or vibrant urban communities, our extensive collection provides unparalleled access to the UAE's most sought-after residential developments.</p>
+        
+        <p>Each community in our portfolio has been meticulously selected based on strategic location advantages, infrastructure quality, developer reputation, and investment potential. We understand that choosing the right neighborhood is crucial for both lifestyle satisfaction and long-term investment returns. That's why we provide comprehensive information about each community, including average property prices, available project counts, amenities, connectivity, and unique features that define each area's character and appeal.</p>
+        
+        <p>Our platform empowers buyers and investors to make informed decisions by offering transparent market data, verified listings from reputable developers, and expert insights into emerging communities with high growth potential. From established luxury districts to upcoming neighborhoods offering excellent value propositions, our community directory serves as your trusted guide to navigating the UAE's dynamic real estate landscape and discovering your ideal property investment opportunity.</p>
+    </section>
+
+    <section>
+        <h2>Why Choose UAE Communities for Off-Plan Investment</h2>
+        
+        <h3>Strategic Location Advantages</h3>
+        <p>UAE communities are strategically developed to provide excellent connectivity to business districts, international airports, educational institutions, healthcare facilities, and entertainment venues. Most communities offer proximity to major highways, metro stations, and public transportation networks, ensuring residents enjoy convenient access to all essential services and amenities throughout the emirate.</p>
+
+        <h3>World-Class Infrastructure</h3>
+        <p>Communities across the UAE benefit from world-class infrastructure including modern utilities, high-speed internet connectivity, advanced security systems, and well-maintained roads. The government's continuous investment in infrastructure development ensures that residential areas maintain high living standards and appreciate in value over time, making them excellent long-term investments.</p>
+
+        <h3>Diverse Lifestyle Options</h3>
+        <p>From luxury beachfront communities and golf course residences to family-oriented neighborhoods and urban high-rise districts, the UAE offers diverse lifestyle options to suit every preference and budget. Each community is designed with specific demographics in mind, featuring amenities and facilities tailored to residents' unique needs and expectations.</p>
+
+        <h3>Strong Investment Fundamentals</h3>
+        <p>UAE communities demonstrate strong investment fundamentals including consistent capital appreciation, attractive rental yields ranging from 6-9% annually, and high demand from both local and international tenants. The combination of economic stability, transparent regulatory framework, and tax-free environment makes UAE communities highly attractive for property investors seeking secure and profitable real estate opportunities.</p>
+
+        <h3>Premium Amenities & Facilities</h3>
+        <p>Modern UAE communities feature comprehensive amenities including swimming pools, fitness centers, children's play areas, landscaped parks, jogging tracks, retail outlets, restaurants, and community centers. These facilities enhance residents' quality of life while contributing to property values and rental attractiveness, ensuring your investment remains competitive in the market.</p>
+
+        <h3>Secure & Regulated Environment</h3>
+        <p>The UAE's robust regulatory framework, RERA protection, escrow account system, and transparent property laws provide comprehensive security for real estate investors. Communities are developed by licensed developers subject to strict quality standards and delivery timelines, giving buyers confidence in their investment and protecting their interests throughout the purchase process.</p>
+    </section>
+
+    <section>
+        <h2>Types of Communities Available for Investment</h2>
+        
+        <h3>Luxury Waterfront Communities</h3>
+        <p>Waterfront communities offer exclusive beachfront and marina living with stunning views, private beach access, yacht berths, and premium amenities. These prestigious addresses attract high-net-worth individuals and deliver exceptional rental yields due to their unique locations and luxury positioning in the market.</p>
+
+        <h3>Family-Oriented Suburban Communities</h3>
+        <p>Suburban communities provide spacious villas and townhouses in safe, family-friendly environments with proximity to international schools, healthcare facilities, and community parks. These neighborhoods offer excellent quality of life for families while providing strong rental demand from expatriate families relocating to the UAE.</p>
+
+        <h3>Urban High-Rise Districts</h3>
+        <p>Downtown and urban communities feature modern high-rise apartments with convenient access to business districts, shopping centers, and entertainment venues. These properties appeal to young professionals and investors seeking high rental yields from short-term and corporate tenants in prime central locations.</p>
+
+        <h3>Golf Course & Sports Communities</h3>
+        <p>Golf course communities offer luxury properties surrounding championship golf courses with clubhouse access, sports facilities, and country club amenities. These premium communities attract affluent buyers and deliver consistent rental income from golf enthusiasts and luxury lifestyle seekers.</p>
+
+        <h3>Mixed-Use Integrated Communities</h3>
+        <p>Integrated communities combine residential, commercial, retail, and leisure components within walkable master-planned developments. These self-contained neighborhoods provide residents with work-live-play convenience while offering investors diversified portfolio opportunities across different property types.</p>
+
+        <h3>Emerging & Growth Communities</h3>
+        <p>Newer communities in developing areas offer excellent value propositions with lower entry prices and strong capital appreciation potential. Early investors in these neighborhoods benefit from price increases as infrastructure develops and amenities are completed, making them ideal for long-term investment strategies.</p>
+    </section>
+
+    <section>
+        <h2>How to Choose the Right Community for Your Investment</h2>
+        
+        <h3>Define Your Investment Goals</h3>
+        <p>Start by clarifying whether you're seeking capital appreciation, rental income, personal residence, or a combination of objectives. Different communities excel in different aspects – luxury areas offer prestige and appreciation, while family communities provide stable rental yields, and emerging areas present growth opportunities.</p>
+
+        <h3>Research Market Trends & Data</h3>
+        <p>Analyze historical price trends, current market conditions, rental yields, vacancy rates, and supply-demand dynamics in target communities. Our platform provides comprehensive market data to help you identify neighborhoods with strong fundamentals and positive growth trajectories for informed investment decisions.</p>
+
+        <h3>Evaluate Location & Connectivity</h3>
+        <p>Assess proximity to key locations including business districts, airports, schools, healthcare facilities, and entertainment venues. Communities with excellent connectivity typically command premium prices and attract quality tenants, ensuring strong rental demand and capital appreciation over time.</p>
+
+        <h3>Consider Amenities & Lifestyle</h3>
+        <p>Review available amenities, community facilities, maintenance quality, and overall lifestyle offerings. Well-maintained communities with comprehensive amenities attract and retain quality tenants, reduce vacancy periods, and command higher rental rates, positively impacting your investment returns.</p>
+
+        <h3>Analyze Developer Reputation</h3>
+        <p>Research developers' track records, delivery timelines, quality standards, and customer satisfaction ratings. Established developers with proven histories of successful project delivery provide greater investment security and typically deliver properties that meet quality expectations and maintain value over time.</p>
+
+        <h3>Understand Regulatory Framework</h3>
+        <p>Familiarize yourself with freehold ownership areas, property laws, registration procedures, and investor protections. Understanding the regulatory environment ensures you make compliant investments while maximizing available benefits such as residence visas linked to property ownership and inheritance rights.</p>
+    </section>
+
+    <section>
+        <h2>Frequently Asked Questions About UAE Communities</h2>
+        
+        <h3>Which UAE communities offer the best investment returns?</h3>
+        <p>Investment returns vary by community type and location. Luxury waterfront areas like Dubai Marina and Palm Jumeirah offer strong capital appreciation, while family communities like Arabian Ranches and Dubai Sports City provide consistent rental yields. Emerging areas such as Dubai South and Tilal Al Ghaf present excellent growth potential for long-term investors seeking capital appreciation.</p>
+
+        <h3>Can foreigners own property in all UAE communities?</h3>
+        <p>Foreign nationals can purchase property in designated freehold areas across Dubai, Abu Dhabi, and other emirates. Most popular communities including Downtown Dubai, Dubai Marina, Business Bay, and Yas Island are freehold zones where international buyers enjoy full ownership rights. Our platform clearly identifies freehold communities to help international investors make informed decisions.</p>
+
+        <h3>What are the average property prices across different communities?</h3>
+        <p>Property prices vary significantly by community, ranging from affordable options starting around 500,000 AED in emerging areas to premium properties exceeding 10 million AED in luxury districts. Our platform provides average price data for each community, helping you identify neighborhoods that align with your budget and investment objectives.</p>
+
+        <h3>How do I evaluate a community's investment potential?</h3>
+        <p>Evaluate communities based on location connectivity, infrastructure development, developer reputation, amenity offerings, supply-demand balance, historical price trends, and rental yield data. Communities with ongoing infrastructure projects, limited supply, and strong rental demand typically offer better investment potential. Our platform provides comprehensive data to support your evaluation process.</p>
+
+        <h3>What amenities should I expect in modern UAE communities?</h3>
+        <p>Modern communities typically feature swimming pools, fitness centers, children's play areas, landscaped parks, retail outlets, restaurants, community centers, and 24/7 security. Premium communities may include golf courses, beach access, marinas, sports facilities, and concierge services. Amenity quality and variety significantly impact property values and rental attractiveness.</p>
+    </section>
+</div>
+
+<!-- Communities Section -->
+<section class="communities-section">
+    <div class="communities-wrapper">
+        
+        <!-- Filter Section -->
+        <div class="filter-section">
+            <div class="filter-header">
+                <i class="fas fa-filter"></i>
+                <h3>Filter by City</h3>
+            </div>
+            <div class="city-filters">
+                <a href="{% url 'main:all_communities' %}" title="all cities"
+                   class="city-filter-btn {% if not selected_city %}active{% endif %}">
+                    <i class="fas fa-globe"></i>
+                    All Cities
+                </a>
+                {% for city in cities %}
+                <a href="?city={{ city.slug }}{% if selected_sort %}&sort={{ selected_sort }}{% endif %}" title="city name"
+                   class="city-filter-btn {% if selected_city == city.slug %}active{% endif %}">
+                    <i class="fas fa-map-marker-alt"></i>
+                    {{ city.name }}
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Stats Bar -->
+        <div class="stats-bar">
+            <div class="stats-info">
+                <i class="fas fa-home"></i>
+                <span>Showing <strong>{{ page_obj.paginator.count }}</strong> communities</span>
+            </div>
+            <form method="get" action="">
+                {% if selected_city %}
+                <input type="hidden" name="city" value="{{ selected_city }}">
+                {% endif %}
+                <select class="sort-dropdown" name="sort" onchange="this.form.submit()">
+                    <option value="name-asc" {% if selected_sort == 'name-asc' %}selected{% endif %}>Name (A-Z)</option>
+                    <option value="name-desc" {% if selected_sort == 'name-desc' %}selected{% endif %}>Name (Z-A)</option>
+                    <option value="projects-desc" {% if selected_sort == 'projects-desc' %}selected{% endif %}>Most Projects</option>
+                    <option value="projects-asc" {% if selected_sort == 'projects-asc' %}selected{% endif %}>Least Projects</option>
+                    <option value="price-desc" {% if selected_sort == 'price-desc' %}selected{% endif %}>Highest Price</option>
+                    <option value="price-asc" {% if selected_sort == 'price-asc' %}selected{% endif %}>Lowest Price</option>
+                </select>
+            </form>
+        </div>
+
+        <!-- Community Grid -->
+        <div class="all-communities-grid">
+            {% for community in communities %}
+            <div class="community-card">
+                <div class="community-image-wrapper">
+                    <img src="{{ community.first_property_cover }}" 
+                         alt="{{ community.name }}" 
+                         class="community-image"
+                         title="{{ community.name }}">
+                    
+                    <div class="community-city-badge">
+                        <i class="fas fa-building"></i>
+                        {{ community.city_name }}
+                    </div>
+                    
+                    <div class="community-count-badge">
+                        <i class="fas fa-home"></i>
+                        {{ community.property_count }} Projects
+                    </div>
+                    
+                    <div class="community-overlay">
+                        <h3 class="community-name">{{ community.name }}</h3>
+                    </div>
+                </div>
+                
+                <div class="community-content">
+                    <div class="community-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">Average Price</span>
+                            <span class="stat-value"> {% if community.avg_price %}
+                                    {{ community.avg_price|floatformat:0|intcomma }} AED
+                                {% else %}
+                                    Ask Price
+                                {% endif %}</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Total Projects</span>
+                            <span class="stat-value">{{ community.property_count }}</span>
+                        </div>
+                    </div>
+                    <a href="{% url 'main:community_properties' community.slug %}"
+                    title="view properties"
+                    class="view-properties-btn">
+                        View Properties <i class="fas fa-arrow-right"></i>
+                    </a>
+
+                </div>
+            </div>
+            {% empty %}
+            <div class="no-communities">
+                <i class="fas fa-map-marked-alt"></i>
+                <h3>No Communities Found</h3>
+                <p>No communities available for the selected filters.</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if page_obj.paginator.num_pages > 1 %}
+        <div class="pagination-wrapper">
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                <li>
+                    <a href="?page=1{% if selected_city %}&city={{ selected_city }}{% endif %}{% if selected_sort %}&sort={{ selected_sort }}{% endif %}" title="go to first page">
+                        <i class="fas fa-angle-double-left"></i> First
+                    </a>
+                </li>
+                <li>
+                    <a href="?page={{ page_obj.previous_page_number }}{% if selected_city %}&city={{ selected_city }}{% endif %}{% if selected_sort %}&sort={{ selected_sort }}{% endif %}" title="go to previous page">
+                        <i class="fas fa-chevron-left"></i> Previous
+                    </a>
+                </li>
+                {% else %}
+                <li><span class="disabled"><i class="fas fa-angle-double-left"></i> First</span></li>
+                <li><span class="disabled"><i class="fas fa-chevron-left"></i> Previous</span></li>
+                {% endif %}
+
+                <!-- Page Numbers -->
+                {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                        <li><span class="current">{{ num }}</span></li>
+                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                        <li>
+                            <a href="?page={{ num }}{% if selected_city %}&city={{ selected_city }}{% endif %}{% if selected_sort %}&sort={{ selected_sort }}{% endif %}">
+                                {{ num }}
+                            </a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                <li>
+                    <a href="?page={{ page_obj.next_page_number }}{% if selected_city %}&city={{ selected_city }}{% endif %}{% if selected_sort %}&sort={{ selected_sort }}{% endif %}" title="go to nxt page">
+                        Next <i class="fas fa-chevron-right"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="?page={{ page_obj.paginator.num_pages }}{% if selected_city %}&city={{ selected_city }}{% endif %}{% if selected_sort %}&sort={{ selected_sort }}{% endif %}" title="go to last page">
+                        Last <i class="fas fa-angle-double-right"></i>
+                    </a>
+                </li>
+                {% else %}
+                <li><span class="disabled">Next <i class="fas fa-chevron-right"></i></span></li>
+                <li><span class="disabled">Last <i class="fas fa-angle-double-right"></i></span></li>
+                {% endif %}
+            </ul>
+        </div>
+        {% endif %}
+
+    </div>
+</section>
+{% endblock %}

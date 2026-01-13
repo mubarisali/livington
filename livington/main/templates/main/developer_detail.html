@@ -1,0 +1,342 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% block title %}{{ page_title }}{% endblock %}
+{% block meta_description %}{{ meta_description }}{% endblock %}
+{% block twitter_card %}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@BuyOffPlanUAE">
+<meta name="twitter:title" content="{{ developer.name }} - Dubai Property Developer">
+<meta name="twitter:description" content="{{ meta_description }}">
+{% if developer.logo %}
+<meta name="twitter:image" content="{{  full_image_url }}">
+{% else %}
+<meta name="twitter:image" content="{{ full_image_url }}">
+{% endif %}
+<meta name="twitter:image:alt" content="{{ developer.name }} Logo">
+{% endblock %}
+
+{% block open_graph %}
+<meta property="og:type" content="website">
+<meta property="og:url" content="{{ request.build_absolute_uri }}">
+<meta property="og:title" content="{{ developer.name }} - Dubai Property Developer">
+<meta property="og:description" content="{{ meta_description }}">
+{% if developer.logo %}
+<meta property="og:image" content="{{ full_image_url }}">
+{% endif %}
+<meta property="og:site_name" content="BuyOffPlanUAE">
+{% endblock %}
+{% block content %}
+
+<style>
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .property-card {
+        animation: fadeInUp 0.6s ease-out forwards;
+        opacity: 0;
+        transition: all 0.3s ease;
+    }
+
+    .property-card:nth-child(1) { animation-delay: 0.1s; }
+    .property-card:nth-child(2) { animation-delay: 0.2s; }
+    .property-card:nth-child(3) { animation-delay: 0.3s; }
+    .property-card:nth-child(4) { animation-delay: 0.4s; }
+    .property-card:nth-child(5) { animation-delay: 0.5s; }
+    .property-card:nth-child(6) { animation-delay: 0.6s; }
+
+    .property-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 30px rgba(199, 176, 76, 0.2);
+    }
+
+    /* SEO Content - Hidden from view but visible to search engines */
+    .seo-content {
+        position: absolute;
+        left: -9999px;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+    }
+
+    /* Responsive */
+    @media (max-width: 991px) {
+        .hero-section {
+            min-height: 50vh !important;
+            padding-top: 4rem !important;
+        }
+
+        .filter-section {
+            grid-template-columns: 1fr !important;
+        }
+    }
+
+    @media (max-width: 767px) {
+        .hero-section {
+            padding: 3rem 1rem 2rem !important;
+        }
+
+        .properties-grid {
+            grid-template-columns: 1fr !important;
+        }
+
+        .property-card {
+            animation: none !important;
+            opacity: 1 !important;
+        }
+
+        .developer-logo-wrapper {
+            flex-direction: column !important;
+            text-align: center !important;
+        }
+    }
+</style>
+
+<!-- HERO SECTION -->
+<section class="hero-section" style="position: relative; min-height: 60vh; overflow: hidden; background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);">
+    <div style="position: relative; max-width: 1400px; margin: 0 auto; padding: 8rem 2rem 6rem; display: flex; flex-direction: column; justify-content: center;">
+        
+        <!-- Back Button -->
+        <a href="{% url 'main:developer' %}" style="position: absolute; top: 2rem; left: 2rem; display: inline-flex; align-items: center; gap: 0.5rem; background: white; padding: 0.625rem 1.25rem; border-radius: 10px; text-decoration: none; color: #1e293b; font-weight: 600; transition: all 0.3s; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            <i class="fas fa-arrow-left"></i> Back to Developers
+        </a>
+
+        <div style="max-width: 1000px;">
+            <!-- Developer Logo & Name -->
+            <div class="developer-logo-wrapper" style="display: flex; align-items: center; gap: 2rem; margin-bottom: 2rem;">
+                {% if developer.logo %}
+                <img src="{{ developer.logo }}" alt="{{ developer.name }}" title="{{ developer.name }}" style="height: 120px; object-fit: contain; background: white; padding: 1rem; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                {% else %}
+                <div style="width: 120px; height: 120px; background: white; border-radius: 16px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                    <i class="fas fa-building" style="font-size: 3rem; color: #cbd5e1;"></i>
+                </div>
+                {% endif %}
+                
+                <div>
+                    <h1 style="font-size: clamp(2.5rem, 5vw, 3.75rem); font-weight: 700; color: #1e293b; margin-bottom: 0.5rem; line-height: 1.1;">{{ developer.name }}</h1>
+                    <p style="font-size: 1.125rem; color: #64748b;">{{ total_count }} Premium Properties</p>
+                </div>
+            </div>
+    </div>
+</section>
+
+<!-- DEVELOPER DESCRIPTION SECTION -->
+{% if developer.description %}
+<section style="padding: 4rem 2rem; background: white;">
+    <div style="max-width: 1200px; margin: 0 auto;">
+        <div style="background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%); padding: 3rem; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+            <h2 style="font-size: 2rem; font-weight: 700; color: #1e293b; margin-bottom: 1.5rem; border-left: 4px solid #c7b04c; padding-left: 1.5rem;">About {{ developer.name }}</h2>
+            <div style="color: #475569; line-height: 1.8; font-size: 1.05rem;">
+                {{ developer.description|safe }}
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- SEO Content - Hidden from users but visible to search engines -->
+<div class="seo-content">
+    <section>
+        <h2>Why Choose {{ developer.name }} for Your Dubai Property Investment</h2>
+        
+        <h3>Premium Quality Construction</h3>
+        <p>{{ developer.name }} is renowned for delivering exceptional quality developments with world-class amenities and superior construction standards throughout Dubai. Every project features meticulously planned layouts, high-end finishes, and modern architectural designs that set new benchmarks in luxury living.</p>
+
+        <h3>Strategic Prime Locations</h3>
+        <p>Properties are strategically located across Dubai's most sought-after neighborhoods, offering excellent connectivity to major business districts, shopping destinations, and entertainment venues. Residents enjoy proximity to Dubai's key landmarks while experiencing the perfect balance of urban convenience and lifestyle comfort.</p>
+
+        <h3>Strong Investment Returns</h3>
+        <p>Properties by {{ developer.name }} offer excellent investment opportunities with strong potential for capital appreciation and attractive rental yields. The developer's reputation for timely delivery and quality construction makes these properties highly desirable in Dubai's competitive real estate market, ensuring sustainable long-term value growth.</p>
+
+        <h3>Trusted & Reliable Developer</h3>
+        <p>With a proven track record of successful project deliveries and thousands of satisfied homeowners, {{ developer.name }} has established itself as a trusted name in Dubai real estate. The developer's commitment to transparency, quality, and customer satisfaction has earned recognition from industry experts and property investors alike.</p>
+    </section>
+
+    <section>
+        <h2>Explore {{ developer.name }} Property Portfolio in Dubai</h2>
+        
+        <p>{{ developer.name }} offers a diverse range of residential and commercial properties designed to meet the varied needs of homebuyers and investors in Dubai. From luxurious apartments and spacious villas to modern townhouses and premium penthouses, each property is crafted with attention to detail and contemporary living standards.</p>
+        
+        <p>The properties feature state-of-the-art amenities including swimming pools, fitness centers, children's play areas, landscaped gardens, and 24/7 security systems. Smart home technology, energy-efficient systems, and sustainable building practices are integrated into many developments, reflecting the developer's commitment to modern, eco-friendly living solutions.</p>
+        
+        <p>Whether you're looking for a family home, an investment property, or a luxury residence, {{ developer.name }}'s portfolio includes options across various price points and locations in Dubai. Flexible payment plans and attractive financing options make property ownership accessible to a wide range of buyers, while off-plan opportunities offer excellent value for early investors.</p>
+    </section>
+
+    <section>
+        <h2>Frequently Asked Questions About {{ developer.name }} Properties</h2>
+        
+        <h3>What types of properties does {{ developer.name }} offer in Dubai?</h3>
+        <p>{{ developer.name }} offers a comprehensive range of residential properties including luxury apartments, spacious villas, modern townhouses, and exclusive penthouses. Each property type caters to different lifestyle needs and investment goals, with options available across various sizes and price points throughout Dubai.</p>
+
+        <h3>Are payment plans available for {{ developer.name }} properties?</h3>
+        <p>Yes, {{ developer.name }} typically offers flexible payment plans for off-plan properties, making it easier for buyers to invest in Dubai real estate. Payment schedules are structured to align with construction milestones, and specific terms vary by project. Contact our team for detailed information about current payment options.</p>
+
+        <h3>What amenities are included in {{ developer.name }} developments?</h3>
+        <p>{{ developer.name }} developments feature world-class amenities including swimming pools, state-of-the-art fitness centers, children's play areas, landscaped gardens, BBQ areas, and 24/7 security. Many properties also include smart home features, covered parking, and community retail outlets for residents' convenience.</p>
+
+        <h3>Is investing in {{ developer.name }} properties a good investment in Dubai?</h3>
+        <p>{{ developer.name }} properties represent strong investment opportunities due to the developer's reputation, strategic locations, and quality construction. Properties in prime Dubai locations typically offer good rental yields and capital appreciation potential. However, we recommend consulting with property investment advisors to evaluate specific opportunities based on your investment goals.</p>
+    </section>
+</div>
+
+<!-- FILTERS & PROPERTIES SECTION -->
+<section style="padding: 4rem 2rem; background: #f8fafc;">
+    <div style="max-width: 1400px; margin: 0 auto;">
+
+        <h2 style="font-size: 2rem; font-weight: 700; color: #1e293b; margin-bottom: 2rem; text-align: center;">Browse {{ developer.name }} Properties</h2>
+
+        <!-- Filters -->
+        <div class="filter-section" style="background: white; padding: 2rem; border-radius: 16px; margin-bottom: 3rem; box-shadow: 0 4px 12px rgba(0,0,0,0.06); display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+            
+            <!-- Price Filter -->
+            <select onchange="window.location.href=updateURLParameter('price', this.value)" style="padding: 0.875rem; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 1rem; cursor: pointer;">
+                <option value="">All Prices</option>
+                <option value="under_500k" {% if selected_price == 'under_500k' %}selected{% endif %}>Under 500K</option>
+                <option value="500k_1m" {% if selected_price == '500k_1m' %}selected{% endif %}>500K - 1M</option>
+                <option value="1m_2m" {% if selected_price == '1m_2m' %}selected{% endif %}>1M - 2M</option>
+                <option value="2m_3m" {% if selected_price == '2m_3m' %}selected{% endif %}>2M - 3M</option>
+                <option value="3m_4m" {% if selected_price == '3m_4m' %}selected{% endif %}>3M - 4M</option>
+                <option value="4m_5m" {% if selected_price == '4m_5m' %}selected{% endif %}>4M - 5M</option>
+                <option value="above_5m" {% if selected_price == 'above_5m' %}selected{% endif %}>Above 5M</option>
+            </select>
+
+            <!-- Type Filter -->
+            <select onchange="window.location.href=updateURLParameter('type', this.value)" style="padding: 0.875rem; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 1rem; cursor: pointer;">
+                <option value="">All Types</option>
+                {% for type in types %}
+                <option value="{{ type.id }}" {% if selected_type == type.id|stringformat:"s" %}selected{% endif %}>{{ type.name }}</option>
+                {% endfor %}
+            </select>
+
+            <!-- Location Filter -->
+            <select onchange="window.location.href=updateURLParameter('location', this.value)" style="padding: 0.875rem; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 1rem; cursor: pointer;">
+                <option value="">All Locations</option>
+                {% for location in locations %}
+                <option value="{{ location.id }}" {% if selected_location == location.id|stringformat:"s" %}selected{% endif %}>{{ location.name }}</option>
+                {% endfor %}
+            </select>
+
+            <!-- Status Filter -->
+            <select onchange="window.location.href=updateURLParameter('status', this.value)" style="padding: 0.875rem; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 1rem; cursor: pointer;">
+                <option value="">All Status</option>
+                {% for s in status %}
+                <option value="{{ s.id }}" {% if selected_status == s.id|stringformat:"s" %}selected{% endif %}>{{ s.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Properties Grid -->
+        {% if properties %}
+        <div class="properties-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 2rem;">
+            {% for property in properties %}
+            <a href="{% url 'main:properties_detail' slug=property.slug %}" style="text-decoration: none;">
+                <div class="property-card" style="background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+                    <!-- Property Image -->
+                    <div style="position: relative; height: 250px; overflow: hidden;">
+                        <img src="{{ property.cover }}" alt="{{ property.title }}" style="width: 100%; height: 100%; object-fit: cover;">
+                        
+                        <!-- Price Badge -->
+                        <div style="position: absolute; top: 1rem; right: 1rem; background: rgba(199, 176, 76, 0.95); color: white; padding: 0.5rem 1rem; border-radius: 50px; font-weight: 700; font-size: 1rem;">
+                            AED {{ property.low_price|floatformat:0|intcomma }}
+                        </div>
+                    </div>
+
+                    <!-- Property Info -->
+                    <div style="padding: 1.5rem;">
+                        <h3 style="font-size: 1.25rem; font-weight: 700; color: #1e293b; margin-bottom: 0.75rem; line-height: 1.3;">{{ property.title }}</h3>
+                        
+                        <div style="display: flex; align-items: center; gap: 0.5rem; color: #64748b; margin-bottom: 1rem; font-size: 0.95rem;">
+                            <i class="fas fa-map-marker-alt" style="color: #c7b04c;"></i>
+                            <span>{{ property.district.name }}, {{ property.city.name }}</span>
+                        </div>
+
+                        <div style="display: flex; gap: 1.5rem; color: #64748b; font-size: 0.9rem; padding-top: 1rem; border-top: 1px solid #e2e8f0;">
+                            <span style="display: flex; align-items: center; gap: 0.4rem;">
+                                <i class="fas fa-bed" style="color: #c7b04c;"></i> {{ property.grouped_apartments.first.rooms|default:"N/A" }}
+                            </span>
+                            <span style="display: flex; align-items: center; gap: 0.4rem;">
+                                <i class="fas fa-expand-arrows-alt" style="color: #c7b04c;"></i> {{ property.min_area }} sqft
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if properties.has_other_pages %}
+        <div style="display: flex; justify-content: center; align-items: center; gap: 0.5rem; margin-top: 3rem;">
+            {% if properties.has_previous %}
+            <a href="?page=1{% if selected_price %}&price={{ selected_price }}{% endif %}{% if selected_type %}&type={{ selected_type }}{% endif %}{% if selected_location %}&location={{ selected_location }}{% endif %}{% if selected_status %}&status={{ selected_status }}{% endif %}" style="display: flex; align-items: center; justify-content: center; width: 2.5rem; height: 2.5rem; border: 1px solid #e5e7eb; border-radius: 0.5rem; color: #64748b; text-decoration: none; transition: all 0.3s;">
+                <i class="fas fa-angle-double-left"></i>
+            </a>
+            <a href="?page={{ properties.previous_page_number }}{% if selected_price %}&price={{ selected_price }}{% endif %}{% if selected_type %}&type={{ selected_type }}{% endif %}{% if selected_location %}&location={{ selected_location }}{% endif %}{% if selected_status %}&status={{ selected_status }}{% endif %}" style="display: flex; align-items: center; justify-content: center; width: 2.5rem; height: 2.5rem; border: 1px solid #e5e7eb; border-radius: 0.5rem; color: #64748b; text-decoration: none; transition: all 0.3s;">
+                <i class="fas fa-angle-left"></i>
+            </a>
+            {% else %}
+            <span style="display: flex; align-items: center; justify-content: center; width: 2.5rem; height: 2.5rem; border: 1px solid #e5e7eb; border-radius: 0.5rem; color: #cbd5e1; opacity: 0.5;">
+                <i class="fas fa-angle-double-left"></i>
+            </span>
+            <span style="display: flex; align-items: center; justify-content: center; width: 2.5rem; height: 2.5rem; border: 1px solid #e5e7eb; border-radius: 0.5rem; color: #cbd5e1; opacity: 0.5;">
+                <i class="fas fa-angle-left"></i>
+            </span>
+            {% endif %}
+
+            {% for num in properties.paginator.page_range %}
+                {% if properties.number == num %}
+                <span style="display: flex; align-items: center; justify-content: center; width: 2.5rem; height: 2.5rem; background: linear-gradient(135deg, #1e3a5f, #2c5282); color: white; border-radius: 0.5rem; font-weight: 600;">{{ num }}</span>
+                {% elif num > properties.number|add:'-3' and num < properties.number|add:'3' %}
+                <a href="?page={{ num }}{% if selected_price %}&price={{ selected_price }}{% endif %}{% if selected_type %}&type={{ selected_type }}{% endif %}{% if selected_location %}&location={{ selected_location }}{% endif %}{% if selected_status %}&status={{ selected_status }}{% endif %}" style="display: flex; align-items: center; justify-content: center; width: 2.5rem; height: 2.5rem; border: 1px solid #e5e7eb; border-radius: 0.5rem; color: #64748b; text-decoration: none; transition: all 0.3s;">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+
+            {% if properties.has_next %}
+            <a href="?page={{ properties.next_page_number }}{% if selected_price %}&price={{ selected_price }}{% endif %}{% if selected_type %}&type={{ selected_type }}{% endif %}{% if selected_location %}&location={{ selected_location }}{% endif %}{% if selected_status %}&status={{ selected_status }}{% endif %}" style="display: flex; align-items: center; justify-content: center; width: 2.5rem; height: 2.5rem; border: 1px solid #e5e7eb; border-radius: 0.5rem; color: #64748b; text-decoration: none; transition: all 0.3s;">
+                <i class="fas fa-angle-right"></i>
+            </a>
+            <a href="?page={{ properties.paginator.num_pages }}{% if selected_price %}&price={{ selected_price }}{% endif %}{% if selected_type %}&type={{ selected_type }}{% endif %}{% if selected_location %}&location={{ selected_location }}{% endif %}{% if selected_status %}&status={{ selected_status }}{% endif %}" style="display: flex; align-items: center; justify-content: center; width: 2.5rem; height: 2.5rem; border: 1px solid #e5e7eb; border-radius: 0.5rem; color: #64748b; text-decoration: none; transition: all 0.3s;">
+                <i class="fas fa-angle-double-right"></i>
+            </a>
+            {% else %}
+            <span style="display: flex; align-items: center; justify-content: center; width: 2.5rem; height: 2.5rem; border: 1px solid #e5e7eb; border-radius: 0.5rem; color: #cbd5e1; opacity: 0.5;">
+                <i class="fas fa-angle-right"></i>
+            </span>
+            <span style="display: flex; align-items: center; justify-content: center; width: 2.5rem; height: 2.5rem; border: 1px solid #e5e7eb; border-radius: 0.5rem; color: #cbd5e1; opacity: 0.5;">
+                <i class="fas fa-angle-double-right"></i>
+            </span>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {% else %}
+        <div style="text-align: center; padding: 5rem 1rem;">
+            <i class="fas fa-home" style="font-size: 4rem; color: #cbd5e1; margin-bottom: 1.5rem;"></i>
+            <h3 style="font-size: 1.5rem; font-weight: 600; color: #64748b; margin-bottom: 0.5rem;">No Properties Found</h3>
+            <p style="color: #94a3b8;">Try adjusting your filters to see more results.</p>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<script>
+function updateURLParameter(param, value) {
+    const url = new URL(window.location);
+    if (value) {
+        url.searchParams.set(param, value);
+    } else {
+        url.searchParams.delete(param);
+    }
+    return url.toString();
+}
+</script>
+
+{% endblock %}

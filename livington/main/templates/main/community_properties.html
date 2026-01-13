@@ -1,0 +1,595 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+{% block title %}{{ district.name }} Off-Plan Properties | Discover {{ total_count }} {% endblock %}
+{% block meta_description %}Discover {{ total_count }} premium off-plan properties in {{ district.name }}, Dubai. Expert insights, verified listings, competitive prices, and exclusive payment plans. Your trusted partner in Dubai real estate investment.{% endblock %}
+{% block content %}
+<style>
+    .nav-menu a{
+        color: #fff;
+    }
+    .modern-header.scrolled .nav-menu a{
+        color: #000;
+    }
+    .community-hero {
+        background: linear-gradient(135deg, #1e3a5f 0%, #2c5282 100%);
+        padding: 8rem 2rem 4rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .community-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('{% static "img/hero.avif" %}') center/cover;
+        opacity: 0.1;
+    }
+
+    .community-hero-content {
+        position: relative;
+        max-width: 1400px;
+        margin: 0 auto;
+        z-index: 10;
+    }
+
+    .breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 0.95rem;
+    }
+
+    .breadcrumb a {
+        color: rgba(255, 255, 255, 0.7);
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .breadcrumb a:hover {
+        color: white;
+    }
+
+    .breadcrumb i {
+        font-size: 0.75rem;
+    }
+
+    .community-hero h1 {
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-weight: 700;
+        color: white;
+        margin-bottom: 1rem;
+    }
+
+    .community-hero-subtitle {
+        font-size: 1.25rem;
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 2rem;
+    }
+
+    .community-stats-row {
+        display: flex;
+        gap: 2rem;
+        flex-wrap: wrap;
+    }
+
+    .stat-box {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 1.5rem 2rem;
+        border-radius: 16px;
+        flex: 1;
+        min-width: 200px;
+    }
+
+    .stat-box-label {
+        font-size: 0.875rem;
+        color: rgba(255, 255, 255, 0.7);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-box-value {
+        font-size: 2rem;
+        font-weight: 700;
+        color: white;
+    }
+
+    /* SEO Content - Hidden from view but visible to search engines */
+    .seo-content {
+        position: absolute;
+        left: -9999px;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+    }
+
+    .properties-section {
+        background: #f8fafc;
+        padding: 4rem 2rem;
+    }
+
+    .properties-container {
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .section-header h2 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #1e3a5f;
+    }
+
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        background: white;
+        color: #475569;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 600;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+    }
+
+    .back-link:hover {
+        background: #1e3a5f;
+        color: white;
+        transform: translateX(-4px);
+    }
+
+    /* Filters */
+    .filters-wrapper {
+        background: white;
+        padding: 2rem;
+        border-radius: 16px;
+        margin-bottom: 2rem;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+
+    .filter-label-row {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        color: #1e3a5f;
+        font-weight: 600;
+    }
+
+    .filters-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .filters-grid select {
+        padding: 0.75rem 1rem;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        font-size: 0.95rem;
+        color: #475569;
+        background: white;
+        cursor: pointer;
+        transition: border-color 0.3s ease;
+    }
+
+    .filters-grid select:focus {
+        outline: none;
+        border-color: #c7b04c;
+    }
+
+    .filter-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .results-info {
+        color: #64748b;
+        font-size: 0.95rem;
+    }
+
+    .results-info strong {
+        color: #1e3a5f;
+        font-weight: 700;
+    }
+
+    .clear-btn {
+        padding: 0.625rem 1.25rem;
+        background: #f1f5f9;
+        color: #475569;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .clear-btn:hover {
+        background: #e2e8f0;
+    }
+
+    /* Property Grid */
+    .property-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 2rem;
+        margin-bottom: 3rem;
+    }
+
+    .property-card {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .property-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+    }
+
+    /* Pagination */
+    .pagination-wrapper {
+        display: flex;
+        justify-content: center;
+        margin-top: 3rem;
+    }
+
+    .pagination {
+        display: flex;
+        gap: 0.5rem;
+        list-style: none;
+        padding: 0;
+    }
+
+    .pagination a, .pagination span {
+        padding: 0.75rem 1.25rem;
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        color: #475569;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .pagination a:hover {
+        background: #c7b04c;
+        color: white;
+        border-color: #c7b04c;
+    }
+
+    .pagination .current {
+        background: #c7b04c;
+        color: white;
+        border-color: #c7b04c;
+    }
+
+    /* Responsive */
+    @media (max-width: 767px) {
+        .community-hero {
+            padding: 6rem 1rem 3rem;
+        }
+
+        .community-hero h1 {
+            font-size: 2rem;
+        }
+
+        .community-stats-row {
+            gap: 1rem;
+        }
+
+        .stat-box {
+            min-width: 100%;
+        }
+
+        .properties-section {
+            padding: 3rem 1rem;
+        }
+
+        .section-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .filters-wrapper {
+            padding: 1.5rem;
+        }
+
+        .filters-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .property-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<!-- Community Hero -->
+<section class="community-hero">
+    <div class="community-hero-content">
+        <div class="breadcrumb">
+            <a href="{% url 'main:home' %}" title="to home">Home</a>
+            <i class="fas fa-chevron-right"></i>
+            <a href="{% url 'main:home' %}#communities" title="to communities">Communities</a>
+            <i class="fas fa-chevron-right"></i>
+            <span>{{ district.name }}</span>
+        </div>
+
+        <h1>{{ district.name }} Off-Plan Properties</h1>
+        <p class="community-hero-subtitle">
+            {% if district.city %}{{ district.city.name }} • {% endif %}
+            Discover {{ total_count }} Premium Off-Plan Investment Opportunities
+        </p>
+
+        <div class="community-stats-row">
+            <div class="stat-box">
+                <div class="stat-box-label">Total Properties</div>
+                <div class="stat-box-value">{{ total_count }}</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-box-label">Average Price</div>
+                <div class="stat-box-value">{{ avg_price|floatformat:0|intcomma }} AED</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-box-label">Location</div>
+                <div class="stat-box-value">{% if district.city %}{{ district.city.name }}{% else %}UAE{% endif %}</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SEO Content - Hidden from users but visible to search engines -->
+<div class="seo-content">
+    <section>
+        <h2>Explore Premium Off-Plan Properties in {{ district.name }}</h2>
+        <p>Welcome to {{ district.name }}, one of Dubai's most sought-after communities for off-plan real estate investment. With {{ total_count }} exceptional properties currently available, {{ district.name }} offers unparalleled opportunities for investors, homeowners, and those seeking premium lifestyle experiences in the heart of {% if district.city %}{{ district.city.name }}{% else %}the UAE{% endif %}.</p>
+        
+        <p>{{ district.name }} represents the pinnacle of modern urban development, combining world-class infrastructure, strategic location advantages, and exceptional investment potential. Whether you're a first-time buyer, seasoned investor, or looking to upgrade your lifestyle, our comprehensive collection of off-plan properties in {{ district.name }} provides diverse options to match your specific requirements and financial goals.</p>
+        
+        <p>Our platform at BuyOffPlanUAE brings you verified listings from Dubai's most reputable developers, ensuring transparency, reliability, and peace of mind throughout your property acquisition journey. Each property in {{ district.name }} has been carefully vetted to meet our stringent quality standards, offering competitive pricing starting from {{ avg_price|floatformat:0|intcomma }} AED on average, with flexible payment plans designed to accommodate various investment strategies.</p>
+    </section>
+
+    <section>
+        <h2>Why Invest in {{ district.name }} Off-Plan Properties?</h2>
+        
+        <h3>High ROI Potential</h3>
+        <p>{{ district.name }} offers exceptional return on investment opportunities with property values showing consistent appreciation. The strategic location and ongoing infrastructure development ensure strong capital growth prospects for long-term investors.</p>
+
+        <h3>Prime Location</h3>
+        <p>Strategically positioned in {% if district.city %}{{ district.city.name }}{% else %}Dubai{% endif %}, {{ district.name }} provides excellent connectivity to business districts, entertainment hubs, international schools, and healthcare facilities, making it ideal for families and professionals alike.</p>
+
+        <h3>World-Class Developers</h3>
+        <p>All properties in {{ district.name }} are developed by reputable, award-winning developers with proven track records of delivering quality projects on time. This ensures your investment is backed by industry leaders.</p>
+
+        <h3>Flexible Payment Plans</h3>
+        <p>Benefit from developer-backed payment plans with competitive terms, low down payments, and extended installment options. These flexible financing solutions make property ownership accessible to a wider range of investors.</p>
+
+        <h3>Premium Lifestyle</h3>
+        <p>{{ district.name }} offers world-class amenities including fitness centers, swimming pools, parks, retail outlets, and dining options. Residents enjoy a sophisticated lifestyle with everything they need within reach.</p>
+
+        <h3>Investment Security</h3>
+        <p>Dubai's transparent regulatory framework, RERA protection, and escrow account system provide comprehensive security for off-plan investments. Your capital is protected throughout the development process.</p>
+    </section>
+
+    <section>
+        <h2>Your Complete Guide to Buying Off-Plan in {{ district.name }}</h2>
+        
+        <h3>Investment Advantages</h3>
+        <ul>
+            <li>Lower entry prices compared to ready properties</li>
+            <li>Potential for capital appreciation during construction</li>
+            <li>Flexible payment schedules aligned with construction milestones</li>
+            <li>Opportunity to customize finishes and layouts</li>
+            <li>Access to prime units before public release</li>
+            <li>Developer warranties and guarantees</li>
+            <li>Modern designs with latest amenities and smart home features</li>
+        </ul>
+        
+        <h3>Property Types Available</h3>
+        <ul>
+            <li>Luxury studios perfect for young professionals</li>
+            <li>Spacious 1, 2, and 3-bedroom apartments</li>
+            <li>Premium penthouses with panoramic views</li>
+            <li>Family townhouses with private gardens</li>
+            <li>Exclusive villas in gated communities</li>
+            <li>Commercial units and retail spaces</li>
+            <li>Mixed-use developments combining residential and retail</li>
+        </ul>
+        
+        <h3>Buyer Support Services</h3>
+        <ul>
+            <li>Free property consultation and market insights</li>
+            <li>Mortgage facilitation and financing options</li>
+            <li>Legal support and contract review assistance</li>
+            <li>Post-handover property management services</li>
+            <li>Resale and rental assistance programs</li>
+            <li>Regular construction progress updates</li>
+            <li>Dedicated client relationship managers</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Frequently Asked Questions About {{ district.name }} Properties</h2>
+        
+        <h3>What is the average price range for off-plan properties in {{ district.name }}?</h3>
+        <p>The average price for off-plan properties in {{ district.name }} is approximately {{ avg_price|floatformat:0|intcomma }} AED, with options ranging from affordable studios to luxury penthouses. Prices vary based on property type, size, developer, and specific amenities offered.</p>
+
+        <h3>What payment plans are available for off-plan properties?</h3>
+        <p>Most developers in {{ district.name }} offer flexible payment plans including 60/40, 70/30, and 80/20 schemes, where the percentages represent payments during construction versus on completion. Some projects also offer post-handover payment plans extending 2-5 years after property delivery.</p>
+
+        <h3>How long does construction typically take?</h3>
+        <p>Construction timelines in {{ district.name }} typically range from 18 to 36 months, depending on the project scale and complexity. Reputable developers provide detailed construction schedules and regular progress updates to keep buyers informed throughout the development process.</p>
+
+        <h3>Can foreign investors purchase property in {{ district.name }}?</h3>
+        <p>Yes, {{ district.name }} is located in a freehold area where foreign nationals can purchase property with full ownership rights. International buyers enjoy the same property rights as UAE nationals, including the ability to sell, lease, or inherit the property.</p>
+
+        <h3>What are the expected rental yields in {{ district.name }}?</h3>
+        <p>{{ district.name }} offers attractive rental yields typically ranging from 6% to 9% annually, depending on property type and location within the community. The area's strategic location and premium amenities make it highly desirable for tenants, ensuring strong rental demand.</p>
+    </section>
+</div>
+
+<!-- Properties Section -->
+<section class="properties-section">
+    <div class="properties-container">
+        <div class="section-header">
+            <h2>Available Off-Plan Properties in {{ district.name }}</h2>
+            <a href="{% url 'main:all_communities' %}#communities" title="back communities" class="back-link">
+                <i class="fas fa-arrow-left"></i>
+                Back to Communities
+            </a>
+        </div>
+
+        <!-- Filters -->
+        <div class="filters-wrapper">
+            <form method="get" action="">
+                <div class="filter-label-row">
+                    <i class="fas fa-sliders-h"></i>
+                    <span>Filter Properties by Your Preferences</span>
+                </div>
+
+                <div class="filters-grid">
+                    <select name="developer" onchange="this.form.submit()">
+                        <option value="">All Developers</option>
+                        {% for dev in developers %}
+                        <option value="{{ dev.id }}" {% if request.GET.developer == dev.id|stringformat:"s" %}selected{% endif %}>
+                            {{ dev.name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+
+                    <select name="type" onchange="this.form.submit()">
+                        <option value="">All Property Types</option>
+                        {% for typ in types %}
+                        <option value="{{ typ.id }}" {% if request.GET.type == typ.id|stringformat:"s" %}selected{% endif %}>
+                            {{ typ.name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+
+                    <select name="price" onchange="this.form.submit()">
+                        <option value="">All Price Ranges</option>
+                        <option value="under_500k" {% if selected_price == 'under_500k' %}selected{% endif %}>Under 500K AED</option>
+                        <option value="500k_1m" {% if selected_price == '500k_1m' %}selected{% endif %}>500K - 1M AED</option>
+                        <option value="1m_2m" {% if selected_price == '1m_2m' %}selected{% endif %}>1M - 2M AED</option>
+                        <option value="2m_3m" {% if selected_price == '2m_3m' %}selected{% endif %}>2M - 3M AED</option>
+                        <option value="3m_4m" {% if selected_price == '3m_4m' %}selected{% endif %}>3M - 4M AED</option>
+                        <option value="4m_5m" {% if selected_price == '4m_5m' %}selected{% endif %}>4M - 5M AED</option>
+                        <option value="above_5m" {% if selected_price == 'above_5m' %}selected{% endif %}>Above 5M AED</option>
+                    </select>
+
+                    <select name="status" onchange="this.form.submit()">
+                        <option value="">All Status</option>
+                        {% for sts in status %}
+                        <option value="{{ sts.id }}" {% if request.GET.status == sts.id|stringformat:"s" %}selected{% endif %}>
+                            {{ sts.name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="filter-actions">
+                    <div class="results-info">
+                        <i class="fas fa-home" style="color: #c7b04c;"></i>
+                        <strong>{{ total_count }}</strong> premium properties found in {{ district.name }}
+                    </div>
+                    <a href="{% url 'main:community_properties' slug=district.id %}" class="clear-btn">
+                        Clear All Filters
+                    </a>
+                </div>
+            </form>
+        </div>
+
+        <!-- Property Grid -->
+        <div class="property-grid">
+            {% for prop in properties %}
+            <div class="property-card">
+                <div style="position:relative; overflow:hidden;">
+                    <img src="{{ prop.cover }}" alt="{{ prop.title}} - Off-Plan Property in {{ district.name }}" title="{{ prop.title}}" style="width:100%; height:240px; object-fit:cover; transition:transform 0.3s ease;">
+                    <div style="position:absolute; top:12px; left:12px; background:#1e3a5f; color:white; padding:0.4rem 0.8rem; border-radius:8px; font-size:0.75rem; font-weight:600;">
+                        {{ prop.property_status.name }}
+                    </div>
+                    <div style="position:absolute; top:12px; right:12px; background:#c7b04c; color:white; padding:0.4rem 0.9rem; border-radius:8px; font-size:0.75rem; font-weight:700;">
+                        {{ prop.property_type|upper }}
+                    </div>
+                </div>
+                <div style="padding:1.5rem;">
+                    <div style="display:flex; align-items:center; gap:0.4rem; margin-bottom:0.8rem; color:#64748b; font-size:0.85rem;">
+                        <i class="fas fa-map-marker-alt" style="color:#c7b04c;"></i>
+                        <span>{{ prop.district.name }}, {{ prop.city.name }}</span>
+                    </div>
+                    <h3 style="font-size:1.3rem; font-weight:700; color:#1e293b; margin-bottom:0.5rem;">{{ prop.title }}</h3>
+                    
+                    <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:1rem;">
+                        <img src="{{ prop.developer.logo }}" alt="{{ prop.developer.name }} - Trusted Developer" style="width:60px; height:60px; border-radius:4px; object-fit:contain;">
+                        <div>
+                            <div style="font-size:0.7rem; color:#94a3b8; text-transform:uppercase;">Developer</div>
+                            <div style="font-size:0.9rem; color:#475569; font-weight:600;">{{ prop.developer.name }}</div>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom:1.2rem;">
+                        <div style="font-size:0.75rem; color:#94a3b8; text-transform:uppercase;">Starting Price</div>
+                        <div style="font-size:1.6rem; font-weight:700; color:#c7b04c;">AED {{ prop.low_price|intcomma }}</div>
+                    </div>
+
+                    <a href="{% url 'main:properties_detail' slug=prop.slug %}" style="display:block; text-align:center; background:#1e3a5f; color:white; padding:0.85rem; border-radius:10px; font-weight:600; text-decoration:none; transition:background 0.3s ease;">
+                        View Full Details <i class="fas fa-arrow-right" style="margin-left:0.4rem;"></i>
+                    </a>
+                </div>
+            </div>
+            {% empty %}
+            <div style="grid-column: 1/-1; text-align:center; padding:4rem 2rem; color:#64748b;">
+                <i class="fas fa-home" style="font-size:4rem; color:#cbd5e1; margin-bottom:1rem;"></i>
+                <h3 style="font-size:1.5rem; color:#475569; margin-bottom:0.5rem;">No Properties Found</h3>
+                <p>Try adjusting your filters to discover more investment opportunities in {{ district.name }}.</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if properties.has_other_pages %}
+        <div class="pagination-wrapper">
+            <ul class="pagination">
+                {% if properties.has_previous %}
+                <li><a href="?page=1{% if request.GET.price %}&price={{ request.GET.price }}{% endif %}{% if request.GET.developer %}&developer={{ request.GET.developer }}{% endif %}{% if request.GET.type %}&type={{ request.GET.type }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}" title="First page">First</a></li>
+                <li><a href="?page={{ properties.previous_page_number }}{% if request.GET.price %}&price={{ request.GET.price }}{% endif %}{% if request.GET.developer %}&developer={{ request.GET.developer }}{% endif %}{% if request.GET.type %}&type={{ request.GET.type }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}" title="Previous page">Previous</a></li>
+                {% endif %}
+
+                <li><span class="current">Page {{ properties.number }} of {{ properties.paginator.num_pages }}</span></li>
+
+                {% if properties.has_next %}
+                <li><a href="?page={{ properties.next_page_number }}{% if request.GET.price %}&price={{ request.GET.price }}{% endif %}{% if request.GET.developer %}&developer={{ request.GET.developer }}{% endif %}{% if request.GET.type %}&type={{ request.GET.type }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}" title="Next page">Next</a></li>
+                <li><a href="?page={{ properties.paginator.num_pages }}{% if request.GET.price %}&price={{ request.GET.price }}{% endif %}{% if request.GET.developer %}&developer={{ request.GET.developer }}{% endif %}{% if request.GET.type %}&type={{ request.GET.type }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}" title="Last page">Last</a></li>
+                {% endif %}
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+{% endblock %}

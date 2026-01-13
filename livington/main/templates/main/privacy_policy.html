@@ -1,0 +1,892 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Privacy Policy - BuyOffPlanUAE{% endblock %}
+{% block meta_description %}Discover how BuyOffPlanUAE protects your privacy and secures your personal data. Read our detailed privacy policy covering data collection, usage, storage, and your rights when using our services.{% endblock %}
+
+{% block content %}
+
+<style>
+    .modern-header{
+        background: #fff;
+    }
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .privacy-hero {
+        background: linear-gradient(135deg, #1e3a5f 0%, #0f1f3a 100%);
+        padding: 140px 20px 60px;
+        color: white;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .privacy-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg width="60" height="60" xmlns="http://www.w3.org/2000/svg"><path d="M30 0L60 30L30 60L0 30Z" fill="rgba(199,176,76,0.08)"/></svg>');
+        opacity: 0.5;
+    }
+
+    .privacy-hero::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -10%;
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(circle, rgba(199,176,76,0.15) 0%, transparent 70%);
+        border-radius: 50%;
+    }
+
+    .privacy-hero .container {
+        max-width: 1200px;
+        margin: auto;
+        position: relative;
+        z-index: 1;
+    }
+
+    .privacy-hero h1 {
+        font-size: 3.5rem;
+        font-weight: 800;
+        margin-bottom: 15px;
+        text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        background: linear-gradient(135deg, #ffffff 0%, #c7b04c 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .privacy-hero .subtitle {
+        font-size: 1.2rem;
+        opacity: 0.95;
+        margin-bottom: 10px;
+        color: #c7b04c;
+    }
+
+    .privacy-hero .updated {
+        display: inline-block;
+        background: rgba(199,176,76,0.2);
+        padding: 8px 20px;
+        border-radius: 50px;
+        font-size: 0.9rem;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(199,176,76,0.3);
+    }
+
+    .privacy-content {
+        background: #f8fafc;
+        padding: 60px 20px;
+    }
+
+    .privacy-content .container {
+        max-width: 1200px;
+        margin: auto;
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        gap: 40px;
+    }
+
+    .sidebar {
+        position: sticky;
+        top: 20px;
+        height: fit-content;
+    }
+
+    .sidebar-nav {
+        background: white;
+        border-radius: 16px;
+        padding: 25px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        border-top: 3px solid #c7b04c;
+    }
+
+    .sidebar-nav h3 {
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #1e3a5f;
+        margin-bottom: 15px;
+        font-weight: 700;
+    }
+
+    .sidebar-nav ul {
+        list-style: none;
+    }
+
+    .sidebar-nav ul li {
+        margin-bottom: 10px;
+    }
+
+    .sidebar-nav ul li a {
+        text-decoration: none;
+        color: #64748b;
+        font-size: 0.95rem;
+        display: block;
+        padding: 8px 12px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .sidebar-nav ul li a:hover {
+        background: #f1f5f9;
+        color: #1e3a5f;
+        transform: translateX(5px);
+        border-left: 3px solid #c7b04c;
+    }
+
+    .main-content {
+        background: white;
+        border-radius: 20px;
+        padding: 50px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    }
+
+    .section {
+        margin-bottom: 50px;
+        scroll-margin-top: 100px;
+    }
+
+    .section h2 {
+        font-size: 2rem;
+        color: #1e3a5f;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        font-weight: 700;
+    }
+
+    .section h2::before {
+        content: '';
+        width: 6px;
+        height: 35px;
+        background: linear-gradient(135deg, #c7b04c, #d4c165);
+        border-radius: 3px;
+        flex-shrink: 0;
+    }
+
+    .section h3 {
+        font-size: 1.4rem;
+        color: #1e3a5f;
+        margin-top: 30px;
+        margin-bottom: 15px;
+        font-weight: 600;
+    }
+
+    .section p {
+        line-height: 1.9;
+        color: #475569;
+        font-size: 1.05rem;
+        margin-bottom: 20px;
+    }
+
+    .section ul {
+        margin-left: 0;
+        list-style: none;
+        margin-bottom: 25px;
+    }
+
+    .section ul li {
+        position: relative;
+        padding-left: 30px;
+        margin-bottom: 15px;
+        line-height: 1.8;
+        color: #475569;
+    }
+
+    .section ul li::before {
+        content: '✓';
+        position: absolute;
+        left: 0;
+        color: #c7b04c;
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+
+    .highlight-box {
+        background: linear-gradient(135deg, #faf9f5 0%, #fefdfb 100%);
+        border-left: 4px solid #c7b04c;
+        padding: 25px;
+        border-radius: 12px;
+        margin: 30px 0;
+    }
+
+    .highlight-box h3 {
+        margin-top: 0;
+        color: #1e3a5f;
+    }
+
+    .contact-card {
+        background: linear-gradient(135deg, #1e3a5f 0%, #0f1f3a 100%);
+        color: white;
+        padding: 40px;
+        border-radius: 16px;
+        text-align: center;
+        margin-top: 50px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .contact-card::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(199,176,76,0.1) 0%, transparent 70%);
+        animation: pulse 4s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); opacity: 0.5; }
+        50% { transform: scale(1.1); opacity: 0.3; }
+    }
+
+    .contact-card h3 {
+        font-size: 1.8rem;
+        margin-bottom: 15px;
+        position: relative;
+        z-index: 1;
+        color: #ffffff;
+    }
+
+    .contact-card p {
+        color: rgba(255,255,255,0.9);
+        margin-bottom: 25px;
+        position: relative;
+        z-index: 1;
+        font-size: 1.05rem;
+    }
+
+    .contact-card a {
+        display: inline-block;
+        background: #c7b04c;
+        color: #1e3a5f;
+        padding: 15px 40px;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(199,176,76,0.3);
+        position: relative;
+        z-index: 1;
+        border: none;
+    }
+
+    .contact-card a:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(199,176,76,0.5);
+        background: #d4c165;
+    }
+
+    /* Large Tablet - 1024px and below */
+    @media (max-width: 1024px) {
+        .privacy-content .container {
+            grid-template-columns: 240px 1fr;
+            gap: 30px;
+        }
+
+        .sidebar-nav {
+            padding: 20px;
+        }
+
+        .main-content {
+            padding: 40px;
+        }
+
+        .privacy-hero h1 {
+            font-size: 3rem;
+        }
+
+        .section h2 {
+            font-size: 1.8rem;
+        }
+
+        .section h3 {
+            font-size: 1.3rem;
+        }
+    }
+
+    /* Tablet and smaller - 968px and below */
+    @media (max-width: 968px) {
+        .privacy-hero {
+            padding: 120px 20px 50px;
+        }
+
+        .privacy-hero h1 {
+            font-size: 2.8rem;
+        }
+
+        .privacy-hero .subtitle {
+            font-size: 1.1rem;
+        }
+
+        .privacy-content {
+            padding: 50px 20px;
+        }
+
+        .privacy-content .container {
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        .sidebar {
+            position: static;
+        }
+
+        .sidebar-nav ul {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .sidebar-nav ul li a:hover {
+            transform: translateX(0);
+            border-left: none;
+            background: #f1f5f9;
+        }
+
+        .main-content {
+            padding: 35px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section h2 {
+            font-size: 1.7rem;
+        }
+
+        .section h2::before {
+            height: 30px;
+        }
+
+        .contact-card {
+            padding: 35px;
+        }
+    }
+
+    /* Mobile Landscape - 768px and below */
+    @media (max-width: 768px) {
+        .privacy-hero {
+            padding: 100px 15px 40px;
+        }
+
+        .privacy-hero h1 {
+            font-size: 2.3rem;
+        }
+
+        .privacy-hero .subtitle {
+            font-size: 1rem;
+        }
+
+        .privacy-hero .updated {
+            padding: 6px 16px;
+            font-size: 0.85rem;
+        }
+
+        .privacy-content {
+            padding: 40px 15px;
+        }
+
+        .sidebar-nav ul {
+            grid-template-columns: 1fr;
+        }
+
+        .main-content {
+            padding: 30px;
+            border-radius: 16px;
+        }
+
+        .section {
+            margin-bottom: 35px;
+        }
+
+        .section h2 {
+            font-size: 1.6rem;
+            gap: 12px;
+        }
+
+        .section h2::before {
+            height: 28px;
+        }
+
+        .section h3 {
+            font-size: 1.2rem;
+        }
+
+        .section p {
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+        .section ul li {
+            padding-left: 25px;
+            font-size: 0.95rem;
+        }
+
+        .highlight-box {
+            padding: 20px;
+            margin: 25px 0;
+        }
+
+        .contact-card {
+            padding: 30px;
+            margin-top: 40px;
+        }
+
+        .contact-card h3 {
+            font-size: 1.5rem;
+        }
+
+        .contact-card p {
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+
+        .contact-card a {
+            padding: 12px 30px;
+            font-size: 0.95rem;
+        }
+    }
+
+    /* Mobile Portrait - 640px and below */
+    @media (max-width: 640px) {
+        .privacy-hero {
+            padding: 80px 15px 35px;
+        }
+
+        .privacy-hero h1 {
+            font-size: 2rem;
+            line-height: 1.2;
+        }
+
+        .privacy-hero .subtitle {
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+
+        .privacy-hero .updated {
+            font-size: 0.8rem;
+            padding: 6px 14px;
+        }
+
+        .privacy-content {
+            padding: 30px 15px;
+        }
+
+        .sidebar-nav {
+            padding: 18px;
+        }
+
+        .sidebar-nav h3 {
+            font-size: 0.8rem;
+            margin-bottom: 12px;
+        }
+
+        .sidebar-nav ul li a {
+            font-size: 0.9rem;
+            padding: 7px 10px;
+        }
+
+        .main-content {
+            padding: 25px 20px;
+            border-radius: 12px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            scroll-margin-top: 80px;
+        }
+
+        .section h2 {
+            font-size: 1.4rem;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .section h2::before {
+            height: 25px;
+            width: 5px;
+        }
+
+        .section h3 {
+            font-size: 1.1rem;
+            margin-top: 25px;
+        }
+
+        .section p {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+
+        .section ul {
+            margin-bottom: 20px;
+        }
+
+        .section ul li {
+            padding-left: 25px;
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+        }
+
+        .section ul li::before {
+            font-size: 1rem;
+        }
+
+        .highlight-box {
+            padding: 18px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+
+        .highlight-box h3 {
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+        }
+
+        .contact-card {
+            padding: 25px 20px;
+            margin-top: 35px;
+            border-radius: 12px;
+        }
+
+        .contact-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+        }
+
+        .contact-card p {
+            font-size: 0.95rem;
+            margin-bottom: 18px;
+        }
+
+        .contact-card a {
+            padding: 12px 28px;
+            font-size: 0.9rem;
+        }
+    }
+
+    /* Small Mobile - 480px and below */
+    @media (max-width: 480px) {
+        .privacy-hero {
+            padding: 70px 12px 30px;
+        }
+
+        .privacy-hero h1 {
+            font-size: 1.7rem;
+        }
+
+        .privacy-hero .subtitle {
+            font-size: 0.9rem;
+        }
+
+        .privacy-hero .updated {
+            font-size: 0.75rem;
+            padding: 5px 12px;
+        }
+
+        .privacy-content {
+            padding: 25px 12px;
+        }
+
+        .sidebar-nav {
+            padding: 15px;
+        }
+
+        .main-content {
+            padding: 20px 15px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section h2 {
+            font-size: 1.25rem;
+        }
+
+        .section h2::before {
+            height: 22px;
+            width: 4px;
+        }
+
+        .section h3 {
+            font-size: 1rem;
+        }
+
+        .section p {
+            font-size: 0.9rem;
+        }
+
+        .section ul li {
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+        }
+
+        .highlight-box {
+            padding: 15px;
+        }
+
+        .contact-card {
+            padding: 20px 15px;
+        }
+
+        .contact-card h3 {
+            font-size: 1.2rem;
+        }
+
+        .contact-card p {
+            font-size: 0.9rem;
+        }
+
+        .contact-card a {
+            padding: 10px 24px;
+            font-size: 0.85rem;
+        }
+    }
+
+    /* Extra Small Mobile - 375px and below */
+    @media (max-width: 375px) {
+        .privacy-hero {
+            padding: 60px 10px 25px;
+        }
+
+        .privacy-hero h1 {
+            font-size: 1.5rem;
+        }
+
+        .privacy-hero .subtitle {
+            font-size: 0.85rem;
+        }
+
+        .privacy-content {
+            padding: 20px 10px;
+        }
+
+        .main-content {
+            padding: 18px 12px;
+        }
+
+        .section h2 {
+            font-size: 1.15rem;
+        }
+
+        .section h2::before {
+            height: 20px;
+            width: 3px;
+        }
+
+        .section h3 {
+            font-size: 0.95rem;
+        }
+
+        .section p,
+        .section ul li {
+            font-size: 0.85rem;
+        }
+
+        .highlight-box {
+            padding: 12px;
+        }
+
+        .contact-card {
+            padding: 18px 12px;
+        }
+
+        .contact-card h3 {
+            font-size: 1.1rem;
+        }
+
+        .contact-card a {
+            padding: 10px 20px;
+            font-size: 0.8rem;
+        }
+    }
+
+    /* iPhone SE and similar - 360px and below */
+    @media (max-width: 360px) {
+        .privacy-hero h1 {
+            font-size: 1.4rem;
+        }
+
+        .section h2 {
+            font-size: 1.1rem;
+        }
+
+        .contact-card h3 {
+            font-size: 1rem;
+        }
+
+        .contact-card a {
+            word-break: break-all;
+        }
+    }
+</style>
+
+<section class="privacy-hero">
+    <div class="container">
+        <h1>Privacy Policy</h1>
+        <p class="subtitle">Your privacy matters to us</p>
+        <span class="updated">Last updated: January 08, 2026</span>
+    </div>
+</section>
+
+<section class="privacy-content">
+    <div class="container">
+        <aside class="sidebar">
+            <nav class="sidebar-nav">
+                <h3>Quick Navigation</h3>
+                <ul>
+                    <li><a href="#introduction" title="introduction section">Introduction</a></li>
+                    <li><a href="#definitions" title="definition section">Definitions</a></li>
+                    <li><a href="#information" title="information section">Information We Collect</a></li>
+                    <li><a href="#cookies" title="cookies section">Cookies & Tracking</a></li>
+                    <li><a href="#usage" title="usage section">How We Use Data</a></li>
+                    <li><a href="#security" title="security section">Data Security</a></li>
+                    <li><a href="#third-party" title="third-party section">Third-Party Links</a></li>
+                    <li><a href="#children" title="children section">Children's Privacy</a></li>
+                    <li><a href="#changes" title="changes section">Policy Changes</a></li>
+                    <li><a href="#contact" title="contact section">Contact Us</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <div class="main-content">
+            <div id="introduction" class="section">
+                <h2>Introduction</h2>
+                <p>
+                    This Privacy Policy explains how BuyOffPlanUAE ("we", "our", "us") collects,
+                    uses, and protects your personal information when you visit or interact with
+                    our website. We are committed to ensuring that your privacy is protected and
+                    that any information you provide is handled with the utmost care and security.
+                </p>
+            </div>
+
+            <div id="definitions" class="section">
+                <h2>Interpretation and Definitions</h2>
+                <p>
+                    Words with capitalized initials have meanings defined under the following
+                    conditions and apply whether used in singular or plural.
+                </p>
+
+                <div class="highlight-box">
+                    <h3>Key Definitions</h3>
+                    <ul>
+                        <li><strong>Company:</strong> BuyOffPlanUAE, Dubai</li>
+                        <li><strong>Website:</strong> https://www.buyoffplanuae.com/</li>
+                        <li><strong>You:</strong> Any individual accessing or using our Service</li>
+                        <li><strong>Personal Data:</strong> Information that identifies an individual</li>
+                        <li><strong>Usage Data:</strong> Data collected automatically while using the Website</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div id="information" class="section">
+                <h2>Information We Collect</h2>
+                <p>
+                    We may collect usage-related information such as IP address, browser type,
+                    pages visited, time spent on pages, and device identifiers to help improve
+                    website performance and user experience.
+                </p>
+                <p>
+                    This information helps us understand how visitors use our website, identify
+                    areas for improvement, and provide you with a better browsing experience.
+                </p>
+            </div>
+
+            <div id="cookies" class="section">
+                <h2>Cookies and Tracking Technologies</h2>
+                <p>
+                    Our website uses cookies and similar technologies to analyze traffic,
+                    remember user preferences, and improve functionality. Cookies are small
+                    text files stored on your device that help us enhance your experience.
+                </p>
+                <p>
+                    You may disable cookies in your browser settings, but please note that
+                    some features may not work correctly without them.
+                </p>
+            </div>
+
+            <div id="usage" class="section">
+                <h2>How We Use Your Information</h2>
+                <p>We use the collected information for various purposes, including:</p>
+                <ul>
+                    <li>To operate and maintain our website</li>
+                    <li>To analyze user behavior and improve services</li>
+                    <li>To respond to inquiries and user requests</li>
+                    <li>To provide relevant property insights and updates</li>
+                    <li>To enhance security and prevent fraudulent activities</li>
+                    <li>To comply with legal obligations</li>
+                </ul>
+            </div>
+
+            <div id="security" class="section">
+                <h2>Data Security</h2>
+                <p>
+                    We take reasonable technical and organizational measures to protect your
+                    personal data from unauthorized access, disclosure, alteration, or destruction.
+                    Our security practices include encryption, secure servers, and regular security
+                    assessments.
+                </p>
+                <p>
+                    However, please be aware that no online transmission or storage method is
+                    completely secure, and we cannot guarantee absolute security.
+                </p>
+            </div>
+
+            <div id="third-party" class="section">
+                <h2>Third-Party Links</h2>
+                <p>
+                    Our website may contain links to external websites operated by third parties.
+                    We are not responsible for the privacy practices or content of these third-party
+                    sites. We encourage you to review the privacy policies of any external sites
+                    you visit.
+                </p>
+            </div>
+
+            <div id="children" class="section">
+                <h2>Children's Privacy</h2>
+                <p>
+                    Our services are not intended for children under the age of 13, and we do not
+                    knowingly collect personal data from children. If you believe we have
+                    inadvertently collected information from a child, please contact us immediately
+                    so we can remove it.
+                </p>
+            </div>
+
+            <div id="changes" class="section">
+                <h2>Changes to This Policy</h2>
+                <p>
+                    We may update this Privacy Policy from time to time to reflect changes in our
+                    practices or legal requirements. Any changes will be posted on this page with
+                    an updated revision date. We encourage you to review this policy periodically
+                    to stay informed about how we protect your information.
+                </p>
+            </div>
+
+            <div id="contact" class="section">
+                <div class="contact-card">
+                    <h3>Have Questions?</h3>
+                    <p>
+                        If you have any questions or concerns regarding this Privacy Policy,
+                        we're here to help.
+                    </p>
+                    <a href="mailto:info@buyoffplanuae.com" title="mail">info@buyoffplanuae.com</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

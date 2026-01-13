@@ -1,0 +1,179 @@
+<!-- templates/base.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{% block meta_description %}Default meta description.{% endblock %}">
+    <title>{% block title %}BUYOFFPLANUAE.COM{% endblock %}</title>
+     <!-- ========================================
+         TWITTER CARD META TAGS (ADD THIS)
+         ======================================== -->
+    {% block twitter_card %}
+    <!-- Twitter Card - Summary Large Image -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@BuyOffPlanUAE">
+    <meta name="twitter:creator" content="@BuyOffPlanUAE">
+    <meta name="twitter:title" content="{% block twitter_title %}{{ page_title|default:'BuyOffPlanUAE - Dubai Off-Plan Properties' }}{% endblock %}">
+    <meta name="twitter:description" content="{% block twitter_description %}{{ meta_description|default:'Discover premium off-plan properties in Dubai and UAE with expert guidance.' }}{% endblock %}">
+    <meta name="twitter:image" content="{% block twitter_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'img/logo.png' %}{% endblock %}">
+    <meta name="twitter:image:alt" content="{% block twitter_image_alt %}BuyOffPlanUAE - Dubai Off-Plan Properties{% endblock %}">
+    {% endblock %}
+
+    <!-- ========================================
+         OPEN GRAPH META TAGS (BONUS - ALSO ADD)
+         ======================================== -->
+    {% block open_graph %}
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:title" content="{% block og_title %}{{ page_title|default:'BuyOffPlanUAE - Dubai Off-Plan Properties' }}{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}{{ meta_description|default:'Discover premium off-plan properties in Dubai and UAE.' }}{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'img/logo.png' %}{% endblock %}">
+    <meta property="og:site_name" content="BuyOffPlanUAE">
+    <meta property="og:locale" content="en_US">
+    {% endblock %}
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="canonical" href="{{canonical_url}}"> 
+    
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'img/logo.png' %}">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8XRWGFGCYV"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-8XRWGFGCYV');
+    </script>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-5XJGMQPV');</script>
+    <!-- End Google Tag Manager -->
+
+
+    {% block extra_css %}{% endblock %}
+    {% block extra_meta %} {% endblock %}
+</head>
+
+<style>
+    * {
+        font-family: "Montserrat", sans-serif;
+    }
+
+    /* --- Floating Social Button --- */
+    .social-floating-btn {
+        position: fixed;
+        bottom: 25px;
+        right: 25px;
+        width: 55px;
+        height: 55px;
+        background: #c7b04c;
+        color: #fff;
+        border-radius: 50%;
+        box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        z-index: 999;
+        font-size: 22px;
+        transition: 0.3s ease;
+    }
+
+    .social-floating-btn:hover {
+        transform: scale(1.1);
+    }
+
+    /* --- Social Popup Box --- */
+    .social-popup {
+        position: fixed;
+        bottom: 100px;
+        right: 25px;
+        background: white;
+        padding: 15px 20px;
+        border-radius: 12px;
+        box-shadow: 0px 4px 20px rgba(0,0,0,0.15);
+        display: none;
+        flex-direction: column;
+        gap: 15px;
+        z-index: 999;
+    }
+
+    .social-popup a {
+        font-size: 24px;
+        color: #333;
+        transition: 0.3s;
+    }
+
+    .social-popup a:hover {
+        color: #c7b04c;
+    }
+
+    .social-popup .close-popup {
+        font-size: 22px;
+        cursor: pointer;
+        text-align: right;
+        color: #111;
+    }
+</style>
+
+<body>
+
+    {% include 'components/header.html' %}
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    {% include 'components/footer.html' %}
+
+    <!-- Floating Social Button -->
+    <div class="social-floating-btn" onclick="toggleSocialPopup()">
+       <i class="fas fa-ellipsis-v"></i>
+    </div>
+
+    <!-- Social Popup -->
+    <div class="social-popup" id="socialPopup">
+        <a href="https://wa.me/971555478352" target="_blank" title="whatsapp"><i class="fab fa-whatsapp"></i></a>
+        <a href="https://www.instagram.com/offplanuae.ai?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.tiktok.com/@offplanuae.ai" target="_blank"><i class="fab fa-tiktok"></i></a>
+        <a href="https://www.facebook.com/profile.php?id=61584448649138" target="_blank"><i class="fab fa-facebook"></i></a>
+        <a href="http://linkedin.com/company/offplan-uae-ai" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+
+        <span class="close-popup" onclick="toggleSocialPopup()">×</span>
+    </div>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5XJGMQPV"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+        <!-- JS Files -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+
+    <script>
+        function toggleSocialPopup() {
+            const popup = document.getElementById("socialPopup");
+            popup.style.display = popup.style.display === "flex" ? "none" : "flex";
+        }
+    </script>
+
+    {% block extra_js %}{% endblock %}
+
+</body>
+</html>

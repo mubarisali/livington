@@ -1,0 +1,537 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% block title %} Making Off-Plan Property Investment in Dubai Simple {% endblock %}
+{% block meta_description %}Discover Dubai off-plan properties with BuyOffPlanUAE.com — trusted listings, expert advice, and opportunities for smart property investment.{% endblock %}
+{% block extra_css %}
+<style>
+    .pagination {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 30px;
+        margin-bottom: 30px;
+        font-family: 'Arial', sans-serif;
+    }
+
+    .pagination a, .pagination span {
+        padding: 6px 12px;
+        border: 1px solid #ccc;
+        border-radius: 6px 0 6px 0;
+        text-decoration: none;
+        color: #333;
+        transition: all 0.2s ease;
+    }
+
+    .pagination a:hover {
+        background: #ceab57;
+        color: #fff;
+    }
+
+    .pagination .active {
+        background: linear-gradient(135deg, #b79e58 0%, #c1aa5d 25%, #d6c279 50%, #c8b15e 75%, #bfa851 100%);
+        color: #fff;
+        font-weight: bold;
+        border-color: #bfa851;
+    }
+
+    .pagination .disabled {
+        color: #aaa;
+        border-color: #eee;
+        cursor: default;
+    }
+    @media (max-width: 768px) {
+
+    .search-bar-container {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 0.75rem !important;
+        padding: 1rem !important;
+    }
+
+    .search-bar-container input {
+        width: 100% !important;
+    }
+
+    .search-bar-container button,
+    .search-bar-container a {
+        width: 100% !important;
+        text-align: center !important;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Exclusive Properties Section -->
+<section class="exclusive-section" style="padding: 8rem 2rem 4rem; background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%); text-align:center;">
+
+    <!-- Badge -->
+    <div style="display:inline-block; background: #fff7e6; color:#c7b04c; padding:0.4rem 1rem; border-radius:20px; font-weight:600; font-size:0.9rem; margin-bottom:1rem;">PREMIUM SELECTION</div>
+
+    <!-- Heading -->
+    <h1 style="font-size:clamp(2rem,4vw,3.2rem); font-weight:700; color:#1e3a5f; margin-bottom:0.5rem;">
+        Exclusive <span style="background: linear-gradient(135deg,#c7b04c,#c7b04c); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">Properties</span>
+    </h1>
+
+    <!-- Subtitle -->
+    <p style="font-size:1.1rem; color:#64748b; max-width:650px; margin:0 auto 3rem;">
+        Discover premium off-plan properties from trusted developers across the UAE
+    </p>
+
+    <!-- Search + Filters Container -->
+    <div style="background:#ffffff; border-radius:16px; padding:2rem 2rem 1.5rem; box-shadow:0 4px 20px rgba(0,0,0,0.06); max-width:1300px; margin:0 auto 2.5rem;">
+
+        <!-- Search bar -->
+        <form method="get" action="">
+            <!-- Preserve all filters -->
+            <input type="hidden" name="price" value="{{ selected_price }}">
+            <input type="hidden" name="developer" value="{{ selected_developer }}">
+            <input type="hidden" name="type" value="{{ selected_type }}">
+            <input type="hidden" name="location" value="{{ selected_location }}">
+            <input type="hidden" name="status" value="{{ selected_status }}">
+            
+            <div class="search-bar-container"  style="display:flex; align-items:center; gap:1rem; background:#ffffff; padding:1rem 1.5rem; border-radius:10px; border:1px solid #e5e7eb; margin-bottom:1.5rem;">
+                <i class="fas fa-search" style="color:#c7b04c; font-size:1.1rem;"></i>
+                <input type="text" name="search" value="{{ search_query }}" placeholder="Search properties by name, location, or developer..." style="flex:1; border:none; background:transparent; font-size:0.95rem; outline:none; color:#475569;">
+                <button type="submit" style="background:#c7b04c; color:white; padding:0.5rem 1.5rem; border:none; border-radius:8px; font-weight:600; cursor:pointer; transition:background 0.3s ease;">
+                    Search
+                </button>
+                {% if search_query %}
+                <a href="?{% if selected_price %}price={{ selected_price }}&{% endif %}{% if selected_developer %}developer={{ selected_developer }}&{% endif %}{% if selected_type %}type={{ selected_type }}&{% endif %}{% if selected_location %}location={{ selected_location }}&{% endif %}{% if selected_status %}status={{ selected_status }}{% endif %}" title="clear"
+                   style="background:#64748b; color:white; padding:0.5rem 1rem; border-radius:8px; text-decoration:none; font-size:0.9rem;">
+                    Clear
+                </a>
+                {% endif %}
+            </div>
+        </form>
+
+        <!-- Refine Your Search Label -->
+        <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:1rem;">
+            <i class="fas fa-sliders-h" style="color:#c7b04c; font-size:1rem;"></i>
+            <span style="font-weight:600; color:#1e293b; font-size:0.95rem;">Refine Your Search</span>
+        </div>
+
+        <!-- Filters Grid -->
+        <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:1rem; margin-bottom:1.5rem;">
+            
+            <!-- Developer Filter -->
+            <form method="get" action="">
+                <input type="hidden" name="price" value="{{ selected_price }}">
+                <input type="hidden" name="type" value="{{ selected_type }}">
+                <input type="hidden" name="location" value="{{ selected_location }}">
+                <input type="hidden" name="status" value="{{ selected_status }}">
+                <input type="hidden" name="search" value="{{ search_query }}">
+                <select name="developer" onchange="this.form.submit()" 
+                    style="padding:0.75rem 1rem; border-radius:10px; border:1px solid #e5e7eb; font-size:0.9rem; color:#475569; background:#ffffff; cursor:pointer; width:100%;">
+                    <option value="" {% if not selected_developer %}selected{% endif %}>All Developers</option>
+                    {% for dev in developers %}
+                    <option value="{{ dev.name }}" {% if selected_developer == dev.name %}selected{% endif %}>{{ dev.name }}</option>
+                    {% endfor %}
+                </select>
+            </form>
+
+            <!-- Type Filter -->
+            <form method="get" action="">
+                <input type="hidden" name="price" value="{{ selected_price }}">
+                <input type="hidden" name="developer" value="{{ selected_developer }}">
+                <input type="hidden" name="location" value="{{ selected_location }}">
+                <input type="hidden" name="status" value="{{ selected_status }}">
+                <input type="hidden" name="search" value="{{ search_query }}">
+                <select name="type" onchange="this.form.submit()" 
+                    style="padding:0.75rem 1rem; border-radius:10px; border:1px solid #e5e7eb; font-size:0.9rem; color:#475569; background:#ffffff; cursor:pointer; width:100%;">
+                    <option value="" {% if not selected_type %}selected{% endif %}>All Types</option>
+                    {% for typ in types %}
+                    <option value="{{ typ.name }}" {% if selected_type == typ.name %}selected{% endif %}>{{ typ.name }}</option>
+                    {% endfor %}
+                </select>
+            </form>
+            
+            <!-- Price Filter -->
+            <form method="get" action="">
+                <input type="hidden" name="developer" value="{{ selected_developer }}">
+                <input type="hidden" name="type" value="{{ selected_type }}">
+                <input type="hidden" name="location" value="{{ selected_location }}">
+                <input type="hidden" name="status" value="{{ selected_status }}">
+                <input type="hidden" name="search" value="{{ search_query }}">
+                <select name="price" onchange="this.form.submit()" 
+                    style="padding:0.75rem 1rem; border-radius:10px; border:1px solid #e5e7eb; font-size:0.9rem; color:#475569; background:#ffffff; cursor:pointer; width:100%;">
+                    <option value="" {% if not selected_price %}selected{% endif %}>All Prices</option>
+                    <option value="under_500k" {% if selected_price == 'under_500k' %}selected{% endif %}>Under 500K AED</option>
+                    <option value="500k_1m" {% if selected_price == '500k_1m' %}selected{% endif %}>500K - 1M AED</option>
+                    <option value="1m_2m" {% if selected_price == '1m_2m' %}selected{% endif %}>1M - 2M AED</option>
+                    <option value="2m_3m" {% if selected_price == '2m_3m' %}selected{% endif %}>2M - 3M AED</option>
+                    <option value="3m_4m" {% if selected_price == '3m_4m' %}selected{% endif %}>3M - 4M AED</option>
+                    <option value="4m_5m" {% if selected_price == '4m_5m' %}selected{% endif %}>4M - 5M AED</option>
+                    <option value="above_5m" {% if selected_price == 'above_5m' %}selected{% endif %}>Above 5M AED</option>
+                </select>
+            </form>
+            
+            <!-- Location Filter -->
+            <form method="get" action="">
+                <input type="hidden" name="price" value="{{ selected_price }}">
+                <input type="hidden" name="developer" value="{{ selected_developer }}">
+                <input type="hidden" name="type" value="{{ selected_type }}">
+                <input type="hidden" name="status" value="{{ selected_status }}">
+                <input type="hidden" name="search" value="{{ search_query }}">
+                <select name="location" onchange="this.form.submit()" 
+                    style="padding:0.75rem 1rem; border-radius:10px; border:1px solid #e5e7eb; font-size:0.9rem; color:#475569; background:#ffffff; cursor:pointer; width:100%;">
+                    <option value="" {% if not selected_location %}selected{% endif %}>All Locations</option>
+                    {% for loc in location %}
+                    <option value="{{ loc.name }}" {% if selected_location == loc.name %}selected{% endif %}>{{ loc.name }}</option>
+                    {% endfor %}
+                </select>
+            </form>
+
+            <!-- Status Filter -->
+            <form method="get" action="">
+                <input type="hidden" name="price" value="{{ selected_price }}">
+                <input type="hidden" name="developer" value="{{ selected_developer }}">
+                <input type="hidden" name="type" value="{{ selected_type }}">
+                <input type="hidden" name="location" value="{{ selected_location }}">
+                <input type="hidden" name="search" value="{{ search_query }}">
+                <select name="status" onchange="this.form.submit()" 
+                    style="padding:0.75rem 1rem; border-radius:10px; border:1px solid #e5e7eb; font-size:0.9rem; color:#475569; background:#ffffff; cursor:pointer; width:100%;">
+                    <option value="" {% if not selected_status %}selected{% endif %}>All Status</option>
+                    {% for sts in status %}
+                    <option value="{{ sts.name }}" {% if selected_status == sts.name %}selected{% endif %}>{{ sts.name }}</option>
+                    {% endfor %}
+                </select>
+            </form>
+
+        </div>
+
+        <!-- Result Count + Clear Filters -->
+        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.9rem;">
+            <div style="color:#64748b; font-weight:500;">
+                <i class="fas fa-home" style="color:#c7b04c; margin-right:0.3rem;"></i>
+                <span style="color:#1e293b; font-weight:600;">{{ project.paginator.count }} Properties Found</span>
+            </div>
+            <a href="{% url 'main:properties' %}" style="color:#c7b04c; font-weight:600; text-decoration:none; display:flex; align-items:center; gap:0.3rem;" title="clear all">
+                Clear All Filters <i class="fas fa-times" style="font-size:0.8rem;"></i>
+            </a>
+        </div>
+    </div>
+<style>
+/* GRID */
+.property-grid {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 2rem;
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+/* CARD */
+.property-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 70vh;
+}
+
+/* IMAGE */
+.property-image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 240px;
+    overflow: hidden;
+}
+
+.property-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .3s ease;
+}
+
+/* BADGES */
+.badge-status, .badge-type {
+    position: absolute;
+    top: 12px;
+    padding: 0.4rem 0.9rem;
+    border-radius: 8px;
+    font-size: .75rem;
+    font-weight: 700;
+    color: white;
+}
+
+.badge-status {
+    left: 12px;
+    background: #1e3a5f;
+}
+
+.badge-type {
+    right: 12px;
+    background: #c7b04c;
+}
+
+/* CONTENT */
+.card-content {
+    padding: .5rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.location {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+    margin-bottom: .8rem;
+    color: #64748b;
+    font-size: .85rem;
+}
+
+.title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: .5rem;
+}
+
+/* DEVELOPER */
+.developer-info {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    margin-bottom: 1rem;
+}
+
+.developer-info img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.price {
+    margin-bottom: 1.2rem;
+}
+
+.price-label {
+    font-size: .75rem;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    margin-bottom: .2rem;
+}
+
+.price-value {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #c7b04c;
+}
+
+/* BUTTON */
+.detail-btn {
+    margin-top: auto;
+    display: block;
+    text-align: center;
+    background: #1e3a5f;
+    color: white;
+    padding: .85rem;
+    border-radius: 10px;
+    font-size: .9rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background .3s ease;
+}
+
+.detail-btn:hover {
+    background: #162c46;
+}
+@media (max-width:768px){
+    .property-grid{
+        grid-template-columns: repeat(1,1fr);
+    }
+    .pagination{
+        display: grid;
+        grid-template-columns: repeat(4,1fr);
+    }
+    
+}
+ .seo-content {
+        position: absolute;
+        left: -9999px;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+    }
+</style>
+
+    <!-- Properties Grid -->
+     <div class="property-grid">
+
+    {% for more in project %}
+    <div class="property-card">
+
+        <!-- IMAGE -->
+        <div class="property-image-wrapper">
+            <img src="{{ more.cover }}" alt="{{ more.title }}" title="{{ more.title }}">
+
+            <div class="badge-status">{{ more.property_status.name }}</div>
+            <div class="badge-type">{{ more.property_type|upper }}</div>
+        </div>
+
+        <!-- CONTENT -->
+        <div class="card-content">
+
+            <div class="location">
+                <i class="fas fa-map-marker-alt" style="color:#c7b04c;"></i>
+                <span>{{ more.district.name }}, {{ more.city.name }}</span>
+            </div>
+
+            <h3 class="title">{{ more.title }}</h3>
+
+            <div class="developer-info">
+                <img src="{{ more.developer.logo }}" alt="{{ more.developer.name }}" title="{{ more.developer.name }}">
+                <div>
+                    <div style="font-size:0.7rem; color:#94a3b8; text-transform:uppercase;">Developer</div>
+                    <div style="font-size:0.9rem; color:#475569; font-weight:600;">{{ more.developer.name }}</div>
+                </div>
+            </div>
+
+            <div class="price">
+                <div class="price-label">Starting Price</div>
+                <div class="price-value">AED {{ more.low_price|intcomma }}</div>
+            </div>
+
+            <!-- BUTTON AT BOTTOM -->
+            <a href="{% url 'main:properties_detail' slug=more.slug %}" title="view detail" class="detail-btn">
+                View Details <i class="fas fa-eye"></i>
+            </a>
+
+        </div>
+    </div>
+
+    {% empty %}
+    <div style="grid-column: 1/-1; text-align:center; padding:3rem; color:#64748b;">
+        <i class="fas fa-home" style="font-size:3rem; margin-bottom:1rem; opacity:0.3;"></i>
+        <p style="font-size:1.1rem;">No properties found matching your criteria.</p>
+        {% if search_query or selected_price or selected_developer or selected_type or selected_location or selected_status %}
+        <a href="{% url 'main:properties' %}" title="clear filter" style="margin-top:1rem; display:inline-block; color:#c7b04c; font-weight:600;">
+            Clear all filters and try again
+        </a>
+        {% endif %}
+    </div>
+    {% endfor %}
+
+</div>
+
+
+    <!-- Pagination -->
+    <div class="pagination">
+        
+        <!-- First Page -->
+        {% if project.has_previous %}
+            <a href="?page=1{% if selected_price %}&price={{ selected_price }}{% endif %}{% if selected_developer %}&developer={{ selected_developer }}{% endif %}{% if selected_type %}&type={{ selected_type }}{% endif %}{% if selected_location %}&location={{ selected_location }}{% endif %}{% if selected_status %}&status={{ selected_status }}{% endif %}{% if search_query %}&search={{ search_query }}{% endif %}">First</a>
+        {% endif %}
+
+        <!-- Previous Page -->
+        {% if project.has_previous %}
+            <a href="?page={{ project.previous_page_number }}{% if selected_price %}&price={{ selected_price }}{% endif %}{% if selected_developer %}&developer={{ selected_developer }}{% endif %}{% if selected_type %}&type={{ selected_type }}{% endif %}{% if selected_location %}&location={{ selected_location }}{% endif %}{% if selected_status %}&status={{ selected_status }}{% endif %}{% if search_query %}&search={{ search_query }}{% endif %}">Prev</a>
+        {% endif %}
+
+        <!-- Page Numbers -->
+        {% for num in project.paginator.page_range %}
+            {% if num == project.number %}
+                <span class="active">{{ num }}</span>
+            {% elif num >= project.number|add:-2 and num <= project.number|add:2 %}
+                <a href="?page={{ num }}{% if selected_price %}&price={{ selected_price }}{% endif %}{% if selected_developer %}&developer={{ selected_developer }}{% endif %}{% if selected_type %}&type={{ selected_type }}{% endif %}{% if selected_location %}&location={{ selected_location }}{% endif %}{% if selected_status %}&status={{ selected_status }}{% endif %}{% if search_query %}&search={{ search_query }}{% endif %}">{{ num }}</a>
+            {% endif %}
+        {% endfor %}
+
+        <!-- Next Page -->
+        {% if project.has_next %}
+            <a href="?page={{ project.next_page_number }}{% if selected_price %}&price={{ selected_price }}{% endif %}{% if selected_developer %}&developer={{ selected_developer }}{% endif %}{% if selected_type %}&type={{ selected_type }}{% endif %}{% if selected_location %}&location={{ selected_location }}{% endif %}{% if selected_status %}&status={{ selected_status }}{% endif %}{% if search_query %}&search={{ search_query }}{% endif %}">Next</a>
+        {% endif %}
+
+        <!-- Last Page -->
+        {% if project.has_next %}
+            <a href="?page={{ project.paginator.num_pages }}{% if selected_price %}&price={{ selected_price }}{% endif %}{% if selected_developer %}&developer={{ selected_developer }}{% endif %}{% if selected_type %}&type={{ selected_type }}{% endif %}{% if selected_location %}&location={{ selected_location }}{% endif %}{% if selected_status %}&status={{ selected_status }}{% endif %}{% if search_query %}&search={{ search_query }}{% endif %}">Last</a>
+        {% endif %}
+
+    </div>
+</section>
+ <div class="seo-content">
+        <section>
+            <h2>Dubai's Most Trusted Property Developers</h2>
+            
+            <p>
+                BuyOffPlanUAE.com connects you with Dubai's premier property developers who are shaping the emirate's skyline with innovative and luxurious residential and commercial projects. Our curated selection of verified developers represents the pinnacle of quality, reliability, and excellence in Dubai's dynamic real estate market. Each developer on our platform has been carefully vetted to ensure they meet the highest standards of construction quality, timely delivery, and customer satisfaction.
+            </p>
+            
+            <p>
+                These leading developers bring decades of combined experience in creating world-class communities that blend modern architecture with cutting-edge amenities. From waterfront residences and luxury penthouses to family-friendly villas and smart apartments, our developer partners offer diverse portfolios catering to every lifestyle and investment goal. Whether you're a first-time homebuyer, seasoned investor, or looking for your dream luxury residence, you'll find properties from award-winning developers known for their commitment to excellence and innovation.
+            </p>
+            
+            <p>
+                Dubai's real estate landscape continues to attract global attention, and our partner developers are at the forefront of this growth. They deliver not just properties, but complete lifestyle solutions with integrated communities featuring retail outlets, educational facilities, healthcare centers, and recreational spaces. With flexible payment plans, attractive off-plan prices, and guaranteed returns on investment, these developers make property ownership in Dubai accessible and rewarding for buyers from around the world.
+            </p>
+        </section>
+
+        <section>
+            <h2>Why Choose Developers from BuyOffPlanUAE.com</h2>
+            
+            <h3>Verified & Trusted</h3>
+            <p>Every developer on our platform undergoes rigorous verification to ensure they meet international standards of quality, transparency, and financial stability. We partner only with developers who have proven track records of successful project delivery and satisfied customers.</p>
+
+            <h3>Award-Winning Projects</h3>
+            <p>Our developer partners have received numerous industry accolades for architectural excellence, sustainable design, and innovative community planning. Their projects set benchmarks in quality construction, modern amenities, and value for money across various price segments.</p>
+
+            <h3>Transparent Dealings</h3>
+            <p>All developers maintain complete transparency in their operations, pricing, and payment schedules. You'll receive clear documentation, regular project updates, and direct access to developer representatives who can address your questions and concerns promptly.</p>
+
+            <h3>Timely Delivery</h3>
+            <p>Our partner developers have established reputations for delivering projects on schedule or ahead of time. Their commitment to meeting deadlines ensures your investment timelines remain predictable and your property handover happens as planned without unnecessary delays.</p>
+
+            <h3>Strong Investment Returns</h3>
+            <p>Properties from our featured developers consistently deliver excellent capital appreciation and rental yields. Strategic locations, quality construction, and desirable amenities ensure your investment grows in value while generating attractive passive income opportunities.</p>
+
+            <h3>Customer-Centric Approach</h3>
+            <p>These developers prioritize customer satisfaction throughout the buying journey. From initial consultation and property selection to post-handover support, you'll experience professional service, clear communication, and dedicated assistance at every stage of your property purchase.</p>
+        </section>
+
+        <section>
+            <h2>Investment Opportunities with Leading Dubai Developers</h2>
+            
+            <p>
+                Investing in properties from established Dubai developers offers numerous advantages that extend beyond simple property ownership. These developers create comprehensive communities that appreciate in value faster than standard residential developments. Their projects are strategically located in high-growth areas with excellent connectivity to business districts, shopping centers, educational institutions, and entertainment venues, ensuring sustained demand from both buyers and renters.
+            </p>
+            
+            <p>
+                Off-plan properties from reputable developers provide significant financial benefits including flexible payment plans that allow you to spread payments over the construction period, often requiring just 10-20% down payment. Early investors typically benefit from pre-launch and construction-phase pricing that can be 20-30% below market rates upon completion. Additionally, many developers offer attractive rental guarantee programs, buyback options, and post-handover payment plans that make investing more accessible and less financially burdensome.
+            </p>
+            
+            <p>
+                The Dubai property market continues to attract international investors due to favorable regulations, tax-free environment, and strong rental yields averaging 6-9% annually. Properties from premium developers command higher rental rates and maintain better occupancy levels, ensuring steady cash flow for investors. With visa opportunities linked to property ownership, freehold ownership rights for foreign investors, and the emirate's position as a global business hub, investing in properties from our featured developers represents a strategic entry into one of the world's most dynamic real estate markets.
+            </p>
+        </section>
+
+        <section>
+            <h2>Frequently Asked Questions About Dubai Developers</h2>
+            
+            <h3>How do I choose the right developer for my investment?</h3>
+            <p>Choose developers based on their track record of completed projects, delivery timelines, financial stability, and customer reviews. Look for developers with established reputations in your preferred location and property type. Our platform provides comprehensive information about each developer's portfolio, helping you make informed decisions based on quality, location, and investment potential.</p>
+
+            <h3>What payment plans do developers typically offer?</h3>
+            <p>Dubai developers offer various payment structures including construction-linked plans (pay percentages at specific construction milestones), post-handover plans (extend payments 1-5 years after completion), and flexible installment options. Down payments typically range from 10-30%, with the balance spread over the construction period and sometimes beyond handover, making property ownership more accessible.</p>
+
+            <h3>Are properties from established developers better investments?</h3>
+            <p>Properties from reputable developers generally offer better investment security, higher resale values, and stronger rental demand. Established developers have proven construction quality, timely delivery records, and prime locations that attract discerning buyers and tenants. Their projects tend to appreciate faster and maintain value better during market fluctuations compared to properties from less established developers.</p>
+
+            <h3>Can foreign investors buy properties from these developers?</h3>
+            <p>Yes, foreign investors can purchase properties in designated freehold areas across Dubai without restrictions. Our featured developers primarily build in freehold zones, allowing international buyers full ownership rights. Some developers also offer assistance with residency visa applications linked to property purchases, making Dubai property ownership attractive for foreign investors seeking both investment returns and lifestyle benefits.</p>
+
+            <h3>What happens if a developer delays project completion?</h3>
+            <p>Dubai's Real Estate Regulatory Authority (RERA) protects buyers through strict regulations governing developer conduct and project timelines. Reputable developers maintain insurance and provide compensation for significant delays. Our featured developers have strong delivery records, but in rare cases of delays, buyers typically receive extensions on payment deadlines or compensation as outlined in purchase agreements and regulated by Dubai Land Department.</p>
+        </section>
+    </div>
+
+{% endblock %}
